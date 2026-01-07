@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Welldent Clinic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .welcome-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(33, 150, 243, 0.3);
+            padding: 60px 80px;
+            text-align: center;
+            max-width: 700px;
+            width: 90%;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .clinic-name {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1976d2;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: 2px;
+        }
+
+        .welcome-text {
+            font-size: 32px;
+            font-weight: 600;
+            color: #42a5f5;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #546e7a;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .enter-button {
+            background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 20px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+            letter-spacing: 1px;
+        }
+
+        .enter-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.6);
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+        }
+
+        .enter-button:active {
+            transform: translateY(0);
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: #78909c;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+        .decorative-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .circle1 {
+            width: 150px;
+            height: 150px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .circle2 {
+            width: 100px;
+            height: 100px;
+            top: 70%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .circle3 {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-20px) scale(1.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-container {
+                padding: 40px 30px;
+            }
+
+            .clinic-name {
+                font-size: 36px;
+            }
+
+            .welcome-text {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .enter-button {
+                padding: 15px 40px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="decorative-circle circle1"></div>
+    <div class="decorative-circle circle2"></div>
+    <div class="decorative-circle circle3"></div>
+
+    <div class="welcome-container">
+        <h1 class="welcome-text">Welcome to</h1>
+        <h2 class="clinic-name">Welldent Clinic</h2>
+        <p class="subtitle">Your trusted partner in dental care and management</p>
+        <button class="enter-button" onclick="enterApplication()">Enter Application</button>
+        <p class="loading-text" id="autoLoadText" style="display: none;">Redirecting automatically...</p>
+    </div>
+
+    <script>
+        function enterApplication() {
+            // Redirect to home page
+            window.location.href = 'home.html';
+        }
+
+        // Auto-redirect after 5 seconds
+        let autoRedirectTimer = setTimeout(() => {
+            document.getElementById('autoLoadText').style.display = 'block';
+            setTimeout(() => {
+                enterApplication();
+            }, 1000);
+        }, 5000);
+
+        // Clear auto-redirect if user clicks the button
+        document.querySelector('.enter-button').addEventListener('click', () => {
+            clearTimeout(autoRedirectTimer);
+        });
+    </script>
+</body>
+</html>
+

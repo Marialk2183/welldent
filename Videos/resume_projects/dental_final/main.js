@@ -40,7 +40,7 @@ function createWindow() {
         }
     });
 
-    mainWindow.loadFile('html/home.html');
+    mainWindow.loadFile('html/welcome.html');
 }
 
 app.whenReady().then(() => {
