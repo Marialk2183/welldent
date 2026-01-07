@@ -3,6 +3,7 @@ services:
     name: welldent-clinic-frontend
     env: node
     plan: free
+    rootDir: .
     buildCommand: npm install
     startCommand: node static-server.js
     envVars:
