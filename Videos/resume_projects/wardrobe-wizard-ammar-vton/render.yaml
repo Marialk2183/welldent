@@ -1,0 +1,33 @@
+services:
+  # Backend Node.js/Express Service
+  - type: web
+    name: wardrobe-wizard-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:server
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false  # Set this in Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+    healthCheckPath: /api/health
+
+  # Python Flask Service for Virtual Try-On
+  - type: web
+    name: wardrobe-wizard-python
+    env: python
+    plan: free
+    buildCommand: pip install -r server/python_server/requirements.txt
+    startCommand: cd server/python_server && gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: RAPIDAPI_KEY
+        sync: false  # Set this in Render dashboard
+    healthCheckPath: /api/try-on
+
