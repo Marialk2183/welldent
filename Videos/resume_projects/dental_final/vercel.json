@@ -8,15 +8,27 @@
     {
       "src": "html/**/*.html",
       "use": "@vercel/static"
+    },
+    {
+      "src": "assets/**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "src": "/api/dental-records",
+      "dest": "/api/dental-records.js"
     },
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
+      "dest": "/api/$1.js"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*\\.html)",
       "dest": "/html/$1"
     },
     {
@@ -30,9 +42,12 @@
       "destination": "/api/:path*"
     },
     {
+      "source": "/assets/:path*",
+      "destination": "/assets/:path*"
+    },
+    {
       "source": "/:path*",
       "destination": "/html/:path*"
     }
   ]
 }
-
