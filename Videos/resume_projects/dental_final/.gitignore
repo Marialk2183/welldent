@@ -10,6 +10,9 @@ yarn-error.log*
 *.sqlite3
 database/*.db
 
+# Vercel
+.vercel
+
 # Build outputs
 dist/
 build/
