@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Information Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #a7cad5, #5dafd2);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, #b6e2e2 0%, #eaf6f6 100%);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      height: 60px;
+      margin: 0;
+    }
+
+    .navbar li {
+      margin: 0 12px;
+    }
+
+    .navbar .nav-link {
+      padding: 12px 20px;
+      color: #1e7fa7;
+      text-decoration: none;
+      font-weight: 500;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .navbar .nav-link.active,
+    .navbar .nav-link:hover {
+      background: #1e7fa7;
+      color: #fff;
+    }
+
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 20px 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 2px solid #333;
+      width: 100%;
+      max-width: 450px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: #091254;
+      font-size: 24px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .search-container {
+      background: #f9f9f9;
+      padding: 16px;
+      border-radius: 8px;
+      border: 2px solid #333;
+      margin-bottom: 24px;
+    }
+
+    .search-container label {
+      display: block;
+      color: #04113e;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .search-container input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #0b76d3;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    #searchResults {
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #fff;
+      font-size: 14px;
+      display: none;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    #searchResults div {
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    #searchResults div:last-child {
+      border-bottom: none;
+    }
+
+    #searchResults button {
+      margin-left: 10px;
+      padding: 4px 8px;
+      background-color: #4b5563;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #searchResults button:hover {
+      background-color: #374151;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    label {
+      color: #04113e;
+      font-weight: 500;
+      font-size: 14px;
+      margin-bottom: 4px;
+      text-align: left;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #0b76d3;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="date"]:focus {
+      outline: none;
+      border-color: #080707;
+      box-shadow: 0 0 5px rgba(6, 84, 117, 0.5);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background-color: #08277b;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0b3aa0;
+    }
+
+    button[type="button"] {
+      background-color: #6b7280;
+    }
+
+    button[type="button"]:hover {
+      background-color: #4b5563;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 16px;
+        max-width: 90%;
+      }
+
+      .navbar ul {
+        padding: 0 12px;
+      }
+
+      .navbar .nav-link {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="patients.html" class="nav-link" id="nav-patients">Patients</a></li>
+      <li><a href="home.html" class="nav-link" id="nav-home">Home</a></li>
+      <li><a href="materials.html" class="nav-link" id="nav-materials">Materials</a></li>
+      <li><a href="note.html" class="nav-link" id="nav-note">Note</a></li>
+      <li><a href="card.html" class="nav-link" id="nav-card">Card</a></li>
+      <li><a href="salary.html" class="nav-link active" id="nav-salary">Salary</a></li>
+      <li><a href="register.html" class="nav-link" id="nav-register">Register</a></li>
+      <li><a href="invoice.html" class="nav-link" id="nav-invoice">Invoice</a></li>
+      <li><a href="exp.html" class="nav-link" id="nav-exp">Expenses</a></li>
+      <li><a href="challan.html" class="nav-link" id="nav-challan">Delivery Challan</a></li>
+    </ul>
+  </nav>
+
+  <div class="content-wrapper">
+    <div class="container">
+      <h1>Employee Details</h1>
+      <div class="search-container">
+        <label for="searchEmployee">Search Employee by Name</label>
+        <input type="text" id="searchEmployee" placeholder="Enter employee name..." aria-label="Search employee by name">
+        <div id="searchResults" aria-live="polite"></div>
+      </div>
+      <form id="employeeForm" onsubmit="handleSubmit(event)">
+        <div><input type="hidden" id="id" name="id"></div>
+        <div><label for="name">Employee Name</label><input type="text" id="name" name="name" required aria-required="true"></div>
+        <div><label for="salary">Salary</label><input type="number" id="salary" name="salary" min="0" step="0.01" required aria-required="true"></div>
+        <div><label for="start-date">Start Date</label><input type="date" id="start-date" name="start-date" required aria-required="true"></div>
+        <div><label for="end-date">End Date</label><input type="date" id="end-date" name="end-date"></div>
+        <div class="buttons">
+          <button type="submit">Save</button>
+          <button type="button" onclick="clearForm()">Clear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function clearForm() {
+      const form = document.getElementById('employeeForm');
+      if (form) {
+        form.reset();
+        document.getElementById('id').value = '';
+      }
+      const searchResults = document.getElementById('searchResults');
+      if (searchResults) searchResults.style.display = 'none';
+    }
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+      const form = document.getElementById('employeeForm');
+      if (!form) return;
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+      const id = document.getElementById('id').value;
+
+      if (!data.name || !data.salary || !data['start-date']) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+      if (parseFloat(data.salary) < 0) {
+        alert('Salary must be greater than or equal to 0.');
+        return;
+      }
+
+      const startDate = new Date(data['start-date']);
+      if (isNaN(startDate.getTime()) || startDate.getFullYear() < 1000 || startDate.getFullYear() > 9999) {
+        alert('Please enter a valid start date (YYYY-MM-DD between 1000 and 9999).');
+        return;
+      }
+
+      const payload = {
+        employee_name: data.name,
+        amount: parseFloat(data.salary),
+        date_paid: data['start-date'],
+        end_date: data['end-date'] || ''
+      };
+      const baseUrl = window.getApiUrl ? window.getApiUrl('api/salaries') : 'http://localhost:3000/api/salaries';
+      const url = id ? baseUrl.replace('/api/salaries', `/api/salaries/${id}`) : baseUrl;
+      const method = id ? 'PUT' : 'POST';
+
+      try {
+        const response = await fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        }
+
+        const result = await response.json();
+        console.log('Employee data saved/updated:', result);
+        alert(`Employee ${id ? 'updated' : 'saved'} successfully!`);
+        clearForm();
+        searchEmployees(''); // Refresh search results
+      } catch (error) {
+        console.error('Error submitting employee data:', error);
+        alert(`An error occurred: ${error.message}`);
+      }
+    }
+
+    async function searchEmployees(searchTerm) {
+      try {
+        const apiUrl = window.getApiUrl ? window.getApiUrl(`api/salaries/search?search=${encodeURIComponent(searchTerm || '')}`) : `http://localhost:3000/api/salaries/search?search=${encodeURIComponent(searchTerm || '')}`;
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const employees = await response.json();
+        console.log('Fetched employees for search:', searchTerm, employees);
+        return employees;
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+        return [];
+      }
+    }
+
+    function fillFormWithEmployee(employee) {
+      try {
+        if (!employee || typeof employee !== 'object') {
+          console.error('Invalid employee data:', employee);
+          return;
+        }
+        const idInput = document.getElementById('id');
+        const nameInput = document.getElementById('name');
+        const salaryInput = document.getElementById('salary');
+        const startDateInput = document.getElementById('start-date');
+        const endDateInput = document.getElementById('end-date');
+        if (!idInput || !nameInput || !salaryInput || !startDateInput || !endDateInput) {
+          console.error('Missing form elements:', { idInput, nameInput, salaryInput, startDateInput, endDateInput });
+          return;
+        }
+
+        const safeEmployee = {
+          id: employee.id || '',
+          employee_name: employee.employee_name || 'Unnamed Employee',
+          amount: employee.amount !== undefined ? employee.amount : '',
+          date_paid: employee.date_paid || '',
+          end_date: employee.end_date || ''
+        };
+
+        idInput.value = safeEmployee.id;
+        nameInput.value = safeEmployee.employee_name;
+        salaryInput.value = safeEmployee.amount;
+        const datePaid = new Date(safeEmployee.date_paid);
+        startDateInput.value = !isNaN(datePaid.getTime()) && datePaid.getFullYear() >= 1000 && datePaid.getFullYear() <= 9999
+          ? safeEmployee.date_paid
+          : new Date().toISOString().split('T')[0];
+        const endDate = new Date(safeEmployee.end_date);
+        endDateInput.value = safeEmployee.end_date && !isNaN(endDate.getTime()) && endDate.getFullYear() >= 1000 && endDate.getFullYear() <= 9999
+          ? safeEmployee.end_date
+          : ''; // Default to empty if invalid or missing
+        console.log('End date debug:', safeEmployee.end_date, endDateInput.value); // Debug log
+        const searchResults = document.getElementById('searchResults');
+        if (searchResults) searchResults.style.display = 'none';
+      } catch (error) {
+        console.error('Error in fillFormWithEmployee:', error);
+      }
+    }
+
+    document.getElementById('searchEmployee').addEventListener('input', async function (e) {
+      const searchTerm = e.target.value.toLowerCase();
+      const searchResults = document.getElementById('searchResults');
+      if (!searchResults) return;
+
+      if (searchTerm.length > 0) {
+        searchResults.style.display = 'block';
+        const employees = await searchEmployees(searchTerm);
+        if (employees.length > 0) {
+          searchResults.innerHTML = employees
+            .filter(emp => (emp.employee_name || '').toLowerCase().includes(searchTerm) || emp.id.toString().includes(searchTerm))
+            .map(emp => {
+              const empData = JSON.stringify({
+                id: emp.id,
+                employee_name: emp.employee_name || 'Unnamed Employee',
+                amount: emp.amount || 0,
+                date_paid: emp.date_paid || '',
+                end_date: emp.end_date || ''
+              });
+              return `
+                <div data-employee='${empData.replace(/"/g, '"')}'>
+                  ${emp.employee_name || 'Unnamed Employee'} (ID: ${emp.id})
+                  <button class="edit-btn">Edit</button>
+                </div>
+              `;
+            }).join('');
+        } else {
+          searchResults.innerHTML = '<div>No matching employees found.</div>';
+        }
+      } else {
+        searchResults.style.display = 'none';
+        searchResults.innerHTML = '';
+      }
+    });
+
+    // Event delegation for Edit button
+    document.getElementById('searchResults').addEventListener('click', function (e) {
+      if (e.target.className === 'edit-btn') {
+        const div = e.target.closest('div');
+        const empData = JSON.parse(div.dataset.employee.replace(/"/g, '"'));
+        console.log('Edit data:', empData); // Debug log
+        fillFormWithEmployee(empData);
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const path = window.location.pathname;
+      const navLinks = {
+        'home.html': 'nav-home',
+        'materials.html': 'nav-materials',
+        'note.html': 'nav-note',
+        'card.html': 'nav-card',
+        'salary.html': 'nav-salary',
+        'register.html': 'nav-register',
+        'invoice.html': 'nav-invoice',
+        'exp.html': 'nav-exp',
+        'challan.html': 'nav-challan'
+      };
+
+      for (const [page, id] of Object.entries(navLinks)) {
+        const link = document.getElementById(id);
+        if (link && path.includes(page)) {
+          link.classList.add('active');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

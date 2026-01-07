@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welldent Dental Lab Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('T.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            height: 80%;
+            overflow-y: auto;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .form-container,
+        .container {
+            background: url('teeth.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 10px;
+
+        }
+
+        .container1 {
+            background: url('teeth.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+
+        }
+
+        .form-container h1,
+        .container h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            background-color: black;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+
+            flex: 3;
+            color: black;
+            margin-right: 5px;
+            margin-left: 0px;
+            background-color: rgb(150, 213, 217);
+            padding: 5px;
+            border-radius: 4px;
+
+
+           
+        }
+        .form-group1 label {
+            flex: 3;
+            color: rgb(10, 0, 0);
+            margin-right: 5px;
+            margin-left: 0px;
+            background-color: rgb(150, 213, 217); /* Custom color for specific labels */
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .form-group1 input[type="text"],
+        .checkbox-group {
+            flex: 2;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            color: black;
+        }
+
+
+        .form-group input[type="text"],
+        .checkbox-group {
+            flex: 2;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            color: black;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-group label {
+            margin-right: 20px;
+            color: black;
+            background-color: rgb(123, 205, 205);
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            padding: 10px;
+            margin-left: 10px; /* Adjust the margin to add space */
+            border: none;
+            border-radius: 4px;
+            background: rgb(135, 202, 222);
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background: rgb(100, 180, 180);
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 10px;
+
+        }
+
+        .row {
+            display: flex;
+            margin: 5px 0;
+        }
+
+        .number {
+            margin: 0 5px;
+            padding: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .highlighted {
+            border: 2px solid brown;
+            border-radius: 50%;
+            padding: 2px 6px;
+        }
+
+        .divider {
+            width: 100%;
+            height: 2px;
+            background-color: rgb(9, 133, 210);
+            margin: 5px 0;
+        }
+
+        .container1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .pipe {
+            position: relative;
+            width: 2px;
+            height: 20px;
+            background-color: black;
+            margin: 0 5px;
+        }
+
+        #selected-numbers {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        button[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: rgb(135, 202, 222); /* Adjust background color */
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px; /* Adjust top margin */
+        }
+
+        button[type="submit"]:hover {
+            background-color: rgb(100, 180, 180); /* Adjust hover background color */
+        }
+
+       
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="form-container">
+            <h1>Welldent Dental Lab</h1>
+            <form>
+                <div class="form-group">
+                    <label for="drName">DR Name</label>
+                    <input type="text" id="drName" name="drName" required>
+                </div>
+                <div class="form-group">
+                    <label for="patientName">Patient Name</label>
+                    <input type="text" id="patientName" name="patientName" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="text" id="age" name="age" required>
+                </div>
+                <div class="form-group">
+                    <label>Sex</label>
+                    <div class="checkbox-group">
+                        <label><input type="radio" name="sex" value="F" required> F</label>
+                        <label><input type="radio" name="sex" value="M"> M</label>
+                    </div>
+                </div>
+                <div class="form-group1">
+                    <label for="SrNO">Sr NO.:</label>
+                    <input type="text" id="SrNo" name="Sr No:" required>
+                    <label for="Date of order">Date of order:</label>
+                    <input type="text" id="DateOfOrder" name="Date of order:" required>
+                    <label for="Date of Delivery">Date of Delivery:</label>
+                    <input type="text" id="DateOfDelivery" name="Date of Delivery:" required>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="container">
+            <h1>STAGE FIXED</h1>
+            <form>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="PFM" onclick="toggleTextField(this)"> PFM</label>
+                    <input type="text" name="PFM_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="Ceramic Facing" onclick="toggleTextField(this)"> Ceramic Facing</label>
+                    <input type="text" name="Ceramic_Facing_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="CAD CAM PFM (5yr warranty)" onclick="toggleTextField(this)"> CAD CAM PFM (5yr warranty)</label>
+                    <input type="text" name="CAD_CAM_PFM_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="Zirconia" onclick="toggleTextField(this)"> Zirconia</label>
+                    <input type="text" name="Zirconia_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="Monolith" onclick="toggleTextField(this)"> Monolith</label>
+                    <input type="text" name="Monolith_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="BruxZir" onclick="toggleTextField(this)"> BruxZir</label>
+                    <input type="text" name="BruxZir_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="E-max Crown/Veneer/Inlay/Onlay" onclick="toggleTextField(this)"> E-max Crown/Veneer/Inlay/Onlay</label>
+                    <input type="text" name="E_max_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="Implant Cemented/Hollow Type" onclick="toggleTextField(this)"> Implant Cemented/Hollow Type</label>
+                    <input type="text" name="Implant_Cemented_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="Implant Screw Retained" onclick="toggleTextField(this)"> Implant Screw Retained</label>
+                    <input type="text" name="Implant_Screw_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="DMLS" onclick="toggleTextField(this)"> DMLS</label>
+                    <input type="text" name="DMLS_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="Tilite" onclick="toggleTextField(this)"> Tilite</label>
+                    <input type="text" name="Tilite_text" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="options" value="Other" onclick="toggleTextFields(this)"> Other</label>
+                    <input type="text" name="Other_text" style="display:none;">
+                    
+                </div>
+                <div class="form-group">
+                    <label for="shade">SHADE</label>
+                    <input type="text" id="shade" name="SHADE" required>
+                    
+                </div>
+            </form>
+        </div>
+
+        <div class="container">
+            <h1>Stage (Fixed)</h1>
+            <form>
+                <div class="form-group">
+                    <input type="checkbox" id="checkbox1" name="checkbox1">
+                    <label for="checkbox1">Coping Trial</label>
+                    <button type="button">Submit</button>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="checkbox2" name="checkbox2">
+                    <label for="checkbox2">Bisque Trial</label>
+                    <button type="button">Submit</button>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="checkbox3" name="checkbox3">
+                    <label for="checkbox3">Finish</label>
+                </div>
+            </form>
+        </div>
+
+        <div class="container">
+            <h1>Stage (Removable)</h1>
+            <form>
+                <div class="form-group">
+                    <input type="checkbox" id="checkbox4" name="checkbox4">
+                    <label for="checkbox4">Wax Rims</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="checkbox5" name="checkbox5">
+                    <label for="checkbox5">Denture Trial</label>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="checkbox6" name="checkbox6">
+                    <label for="checkbox6">Cast Partial Denture Framework Trial</label>
+                </div>
+            </form>
+        </div>
+
+        <div class="container">
+            <h1>Instructions</h1>
+            <form action="/submit" method="post">
+                <label for="largeTextField"></label><br>
+                <textarea id="largeTextField" name="INSTRUCTIONS" rows="10" cols="50"></textarea><br><br>
+
+            </form>
+        </div>
+        <div class="container1">
+            <div class="row">
+                <div class="number">1</div>
+                <div class="number">2</div>
+                <div class="number">3</div>
+                <div class="number">4</div>
+                <div class="number">5</div>
+                <div class="number">6</div>
+                <div class="number">7</div>
+                <div class="number highlighted">8</div>
+                <div class="pipe">|</div>
+                <div class="number">8</div>
+                <div class="number">7</div>
+                <div class="number">6</div>
+                <div class="number">5</div>
+                <div class="number">4</div>
+                <div class="number">3</div>
+                <div class="number">2</div>
+                <div class="number">1</div>
+            </div>
+            <div class="divider"></div>
+            <div class="row">
+                <div class="number">1</div>
+                <div class="number">2</div>
+                <div class="number">3</div>
+                <div class="number">4</div>
+                <div class="number">5</div>
+                <div class="number">6</div>
+                <div class="number">7</div>
+                <div class="number highlighted">8</div>
+                <div class="pipe">|</div>
+                <div class="number">8</div>
+                <div class="number">7</div>
+                <div class="number">6</div>
+                <div class="number">5</div>
+                <div class="number">4</div>
+                <div class="number">3</div>
+                <div class="number">2</div>
+                <div class="number">1</div>
+            </div>
+            <div id="selected-numbers">Selected Numbers: </div>
+        </div>
+
+        <button onclick="window.location.href='index2.html'", type="submit">Submit</button>
+    </div>
+
+    <script>
+        function toggleTextFields(checkbox) {
+            const textFieldsContainer = checkbox.parentElement.nextElementSibling;
+                        textFieldsContainer.style.display = checkbox.checked ? 'block' : 'none';
+            
+        }
+        
+
+        const selectedNumbers = [];
+        document.querySelectorAll('.number').forEach(number => {
+            number.addEventListener('click', () => {
+                if (number.classList.contains('highlighted')) {
+                    number.classList.remove('highlighted');
+                    const index = selectedNumbers.indexOf(number.textContent);
+                    if (index > -1) {
+                        selectedNumbers.splice(index, 1);
+                    }
+                } else {
+                    number.classList.add('highlighted');
+                    selectedNumbers.push(number.textContent);
+                }
+                document.getElementById('selected-numbers').textContent = 'Selected Numbers: ' + selectedNumbers.join(', ');
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>

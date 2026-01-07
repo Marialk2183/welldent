@@ -1,0 +1,44 @@
+{
+  "name": "dental",
+  "version": "1.0.0",
+  "description": "Management System",
+  "main": "main.js",
+  "scripts": {
+    "test": "umed",
+    "start": "electron .",
+    "server": "node server.js",
+    "dev": "node server.js",
+    "build": "electron-builder --win"
+  },
+  "keywords": [
+    "umed"
+  ],
+  "author": "umed",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "pdfkit": "^0.17.1",
+    "puppeteer": "^22.15.0",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "electron": "31.7.7",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.umed.dental",
+    "productName": "DentalManagement",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "asarUnpack": "**\\node_modules\\**"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/puppeteer/.local-chromium/**/*"
+    ]
+  }
+}

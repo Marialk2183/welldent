@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welldent Dental Lab Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: url('../assets/images/bg4.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(90deg, #b6e2e2 0%, #eaf6f6 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            height: 60px;
+            margin: 0;
+        }
+        .navbar li {
+            margin: 0 12px;
+        }
+        .navbar .nav-link {
+            padding: 12px 20px;
+            color: #1e7fa7;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        .navbar .nav-link.active,
+        .navbar .nav-link:hover {
+            background: #1e7fa7;
+            color: #fff;
+        }
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 80px 20px 20px;
+            min-height: 100vh;
+        }
+        .main-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 1000px;
+            overflow-y: auto;
+            border: 2px solid black;
+            border-radius: 10px;
+            margin: 0 auto;
+        }
+        .form-container,
+        .container,
+        .container1 {
+            background: url('teeth.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid black;
+        }
+        .form-container h1,
+        .container h1,
+        .container1 h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            background-color: black;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        .form-group1 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .form-group label,
+        .form-group1 label {
+            flex: 1;
+            color: black;
+            background-color: rgb(150, 213, 217);
+            padding: 5px;
+            border-radius: 4px;
+            min-width: 100px;
+        }
+        .form-group input[type="text"],
+        .form-group1 input[type="text"],
+        .form-group1 input[type="date"],
+        .checkbox-group {
+            flex: 2;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            color: black;
+        }
+        .form-group1 input[readonly] {
+            background: #f0f0f0;
+            cursor: not-allowed;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checkbox-group label {
+            margin-right: 20px;
+            color: black;
+            background-color: rgb(123, 205, 205);
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .generate-btn {
+            background-color: #2196F3;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .register-btn {
+            background-color: #1976D2;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .generate-btn:hover {
+            background-color: #1976D2;
+        }
+        .register-btn:hover {
+            background-color: #45a049;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            margin-top: 20px;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            margin: 5px 0;
+        }
+        .number {
+            position: relative;
+            margin: 0 5px;
+            padding: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border: 1px solid #ccc;
+        }
+        .number:hover {
+            background-color: #e3f2fd;
+        }
+        .highlighted {
+            background-color: #2196F3;
+            color: white;
+            border: 2px solid #1976D2;
+        }
+        .number::after {
+            content: attr(data-position);
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: #666;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .number:hover::after {
+            opacity: 1;
+        }
+        .divider {
+            width: 100%;
+            height: 2px;
+            background-color: rgb(9, 133, 210);
+            margin: 5px 0;
+        }
+        .pipe {
+            width: 2px;
+            height: 20px;
+            background-color: black;
+            margin: 0 5px;
+        }
+        #selected-numbers {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2196F3;
+            text-align: center;
+            padding: 10px;
+            background-color: #e3f2fd;
+            border-radius: 5px;
+        }
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            color: black;
+            cursor: pointer;
+        }
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.3);
+        }
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: vertical;
+        }
+        footer {
+            background-color: rgba(51, 51, 51, 0.9);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+        }
+        @media (max-width: 768px) {
+            .main-container {
+                width: 95%;
+            }
+            .navbar ul {
+                padding: 0 12px;
+            }
+            .navbar li {
+                margin: 0 6px;
+            }
+            .navbar .nav-link {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="patients.html" class="nav-link" id="nav-patients">Patients</a></li>
+            <li><a href="home.html" class="nav-link" id="nav-home">Home</a></li>
+            <li><a href="materials.html" class="nav-link" id="nav-materials">Materials</a></li>
+            <li><a href="note.html" class="nav-link" id="nav-note">Note</a></li>
+            <li><a href="card.html" class="nav-link" id="nav-card">Card</a></li>
+            <li><a href="salary.html" class="nav-link" id="nav-salary">Salary</a></li>
+            <li><a href="register.html" class="nav-link active" id="nav-register">Register</a></li>
+            <li><a href="invoice.html" class="nav-link" id="nav-invoice">Invoice</a></li>
+            <li><a href="exp.html" class="nav-link" id="nav-exp">Expenses</a></li>
+            <li><a href="challan.html" class="nav-link " id="nav-exp">Delivery Challan</a></li>
+        </ul>
+    </nav>
+    <div class="content-wrapper">
+        <div class="main-container">
+            <form id="dentalForm" onsubmit="generatePDF(event)">
+                <div class="form-container">
+                    <h1>Welldent Dental Lab</h1>
+                    <div class="form-group">
+                        <label for="drName">Doctor Name</label>
+                        <input type="text" id="drName" name="drName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="patientName">Patient Name</label>
+                        <input type="text" id="patientName" name="patientName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="text" id="age" name="age" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sex</label>
+                        <div class="checkbox-group">
+                            <label><input type="radio" name="sex" value="F" required> Female</label>
+                            <label><input type="radio" name="sex" value="M"> Male</label>
+                        </div>
+                    </div>
+                    <div class="form-group1">
+                        <label for="SrNo">Sr. No.</label>
+                        <input type="text" id="SrNo" name="SrNo" readonly required>
+                        <label for="DateOfOrder">Date of Order</label>
+                        <input type="date" id="DateOfOrder" name="DateOfOrder" required value="2025-06-23">
+                        <label for="DateOfDelivery">Date of Delivery</label>
+                        <input type="date" id="DateOfDelivery" name="DateOfDelivery" required>
+                    </div>
+                </div>
+                <div class="container">
+                    <h1>Stage Fixed</h1>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="PFM" onclick="toggleTextField(this)"> PFM</label>
+                        <input type="text" name="PFM_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="Ceramic Facing" onclick="toggleTextField(this)"> Ceramic Facing</label>
+                        <input type="text" name="Ceramic_Facing_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="CAD CAM PFM (5yr warranty)" onclick="toggleTextField(this)"> CAD CAM PFM (5yr warranty)</label>
+                        <input type="text" name="CAD_CAM_PFM_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="Zirconia" onclick="toggleTextField(this)"> Zirconia</label>
+                        <input type="text" name="Zirconia_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="Monolith" onclick="toggleTextField(this)"> Monolith</label>
+                        <input type="text" name="Monolith_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="BruxZir" onclick="toggleTextField(this)"> BruxZir</label>
+                        <input type="text" name="BruxZir_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="E-max Crown/Veneer/Inlay/Onlay" onclick="toggleTextField(this)"> E-max Crown/Veneer/Inlay/Onlay</label>
+                        <input type="text" name="E_max_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="Implant Cemented/Hollow Type" onclick="toggleTextField(this)"> Implant Cemented/Hollow Type</label>
+                        <input type="text" name="Implant_Cemented_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="Implant Screw Retained" onclick="toggleTextField(this)"> Implant Screw Retained</label>
+                        <input type="text" name="Implant_Screw_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="DMLS" onclick="toggleTextField(this)"> DMLS</label>
+                        <input type="text" name="DMLS_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="Tilite" onclick="toggleTextField(this)"> Tilite</label>
+                        <input type="text" name="Tilite_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="options" value="Other" onclick="toggleTextField(this)"> Other</label>
+                        <input type="text" name="Other_text" class="option-text" style="display:none;">
+                    </div>
+                    <div class="form-group">
+                        <label for="shade">Shade</label>
+                        <input type="text" id="shade" name="shade" required>
+                    </div>
+                </div>
+                <div class="container">
+                    <h1>Stage (Fixed)</h1>
+                    <div class="form-group">
+                        <input type="checkbox" id="checkbox1" name="fixedStage" value="Coping Trial">
+                        <label for="checkbox1">Coping Trial</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="checkbox2" name="fixedStage" value="Bisque Trial">
+                        <label for="checkbox2">Bisque Trial</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="checkbox3" name="fixedStage" value="Finish">
+                        <label for="checkbox3">Finish</label>
+                    </div>
+                </div>
+                <div class="container">
+                    <h1>Stage (Removable)</h1>
+                    <div class="form-group">
+                        <input type="checkbox" id="checkbox4" name="removableStage" value="Wax Rims">
+                        <label for="checkbox4">Wax Rims</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="checkbox5" name="removableStage" value="Denture Trial">
+                        <label for="checkbox5">Denture Trial</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="checkbox6" name="removableStage" value="Cast Partial Denture Framework Trial">
+                        <label for="checkbox6">Cast Partial Denture Framework Trial</label>
+                    </div>
+                </div>
+                <div class="container">
+                    <h1>Instructions</h1>
+                    <div class="form-group">
+                        <textarea id="instructions" name="instructions" rows="10" style="width: 100%;"></textarea>
+                    </div>
+                </div>
+                <div class="container1">
+                    <h1>Teeth Selection</h1>
+                    <div class="row">
+                        <div class="number" data-position="Upper Left">1</div>
+                        <div class="number" data-position="Upper Left">2</div>
+                        <div class="number" data-position="Upper Left">3</div>
+                        <div class="number" data-position="Upper Left">4</div>
+                        <div class="number" data-position="Upper Left">5</div>
+                        <div class="number" data-position="Upper Left">6</div>
+                        <div class="number" data-position="Upper Left">7</div>
+                        <div class="number" data-position="Upper Left">8</div>
+                        <div class="pipe">|</div>
+                        <div class="number" data-position="Upper Right">8</div>
+                        <div class="number" data-position="Upper Right">7</div>
+                        <div class="number" data-position="Upper Right">6</div>
+                        <div class="number" data-position="Upper Right">5</div>
+                        <div class="number" data-position="Upper Right">4</div>
+                        <div class="number" data-position="Upper Right">3</div>
+                        <div class="number" data-position="Upper Right">2</div>
+                        <div class="number" data-position="Upper Right">1</div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="number" data-position="Lower Left">1</div>
+                        <div class="number" data-position="Lower Left">2</div>
+                        <div class="number" data-position="Lower Left">3</div>
+                        <div class="number" data-position="Lower Left">4</div>
+                        <div class="number" data-position="Lower Left">5</div>
+                        <div class="number" data-position="Lower Left">6</div>
+                        <div class="number" data-position="Lower Left">7</div>
+                        <div class="number" data-position="Lower Left">8</div>
+                        <div class="pipe">|</div>
+                        <div class="number" data-position="Lower Right">8</div>
+                        <div class="number" data-position="Lower Right">7</div>
+                        <div class="number" data-position="Lower Right">6</div>
+                        <div class="number" data-position="Lower Right">5</div>
+                        <div class="number" data-position="Lower Right">4</div>
+                        <div class="number" data-position="Lower Right">3</div>
+                        <div class="number" data-position="Lower Right">2</div>
+                        <div class="number" data-position="Lower Right">1</div>
+                    </div>
+                    <div id="selected-numbers">Selected Teeth: None</div>
+                </div>
+                <button type="button" class="register-btn" id="registerButton">Register</button>
+                <button type="submit" class="generate-btn">Generate PDF</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize Sr. No.
+        function initializeSrNo() {
+            let srNo = localStorage.getItem('dentalFormSrNo');
+            if (!srNo) {
+                srNo = 1;
+                localStorage.setItem('dentalFormSrNo', srNo);
+            }
+            document.getElementById('SrNo').value = srNo;
+        }
+        // Increment Sr. No. after successful submission
+        function incrementSrNo() {
+            let srNo = parseInt(localStorage.getItem('dentalFormSrNo')) || 1;
+            srNo++;
+            localStorage.setItem('dentalFormSrNo', srNo);
+            document.getElementById('SrNo').value = srNo;
+        }
+        // Call initialization on page load
+        window.addEventListener('load', initializeSrNo);
+        function toggleTextField(checkbox) {
+            const textField = checkbox.parentElement.nextElementSibling;
+            textField.style.display = checkbox.checked ? 'block' : 'none';
+        }
+        const selectedNumbers = [];
+        document.querySelectorAll('.number').forEach(number => {
+            number.addEventListener('click', () => {
+                const position = number.getAttribute('data-position');
+                const toothNumber = number.textContent;
+                const toothInfo = `${position} ${toothNumber}`;
+                if (number.classList.contains('highlighted')) {
+                    number.classList.remove('highlighted');
+                    const index = selectedNumbers.indexOf(toothInfo);
+                    if (index > -1) {
+                        selectedNumbers.splice(index, 1);
+                    }
+                } else {
+                    number.classList.add('highlighted');
+                    selectedNumbers.push(toothInfo);
+                }
+                document.getElementById('selected-numbers').textContent = 
+                    selectedNumbers.length > 0 
+                    ? 'Selected Teeth: ' + selectedNumbers.join(', ')
+                    : 'Selected Teeth: None';
+            });
+        });
+        async function generatePDF(event) {
+            event.preventDefault();
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+                doc.setFontSize(20);
+                doc.setTextColor(33, 150, 243);
+                doc.text("Welldent Dental Lab Report", 105, 20, { align: "center" });
+                const today = new Date().toLocaleDateString();
+                doc.setFontSize(10);
+                doc.text(`Generated on: ${today}`, 105, 30, { align: "center" });
+                const formData = {
+                    "Patient Information": {
+                        "Doctor Name": document.getElementById('drName').value || 'N/A',
+                        "Patient Name": document.getElementById('patientName').value || 'N/A',
+                        "Age": document.getElementById('age').value || 'N/A',
+                        "Sex": document.querySelector('input[name="sex"]:checked')?.value || 'N/A',
+                        "Sr. No": document.getElementById('SrNo').value || 'N/A',
+                        "Date of Order": document.getElementById('DateOfOrder').value || 'N/A',
+                        "Date of Delivery": document.getElementById('DateOfDelivery').value || 'N/A'
+                    },
+                    "Stage Fixed Options": {
+                        "Selected Options": Array.from(document.querySelectorAll('input[name="options"]:checked'))
+                            .map(cb => {
+                                const textField = cb.parentElement.nextElementSibling;
+                                const additionalInfo = textField.style.display !== 'none' && textField.value 
+                                    ? ` (${textField.value})` 
+                                    : '';
+                                return cb.value + additionalInfo;
+                            }).join(', ') || 'None',
+                        "Shade": document.getElementById('shade').value || 'N/A'
+                    },
+                    "Stage Progress": {
+                        "Fixed Stage": Array.from(document.querySelectorAll('input[name="fixedStage"]:checked'))
+                            .map(cb => cb.value).join(', ') || 'None',
+                        "Removable Stage": Array.from(document.querySelectorAll('input[name="removableStage"]:checked'))
+                            .map(cb => cb.value).join(', ') || 'None'
+                    },
+                    "Selected Teeth": {
+                        "Teeth": selectedNumbers.join(', ') || 'None'
+                    },
+                    "Instructions": {
+                        "Details": document.getElementById('instructions').value || 'No instructions provided'
+                    }
+                };
+                let startY = 40;
+                const addSection = (title, data) => {
+                    doc.setFontSize(14);
+                    doc.setTextColor(33, 150, 243);
+                    doc.text(title, 14, startY);
+                    startY += 10;
+                    const tableData = Object.entries(data).map(([key, value]) => [key, value]);
+                    doc.autoTable({
+                        startY: startY,
+                        head: [['Field', 'Value']],
+                        body: tableData,
+                        theme: 'grid',
+                        headStyles: {
+                            fillColor: [33, 150, 243],
+                            textColor: 255,
+                            fontSize: 12,
+                            fontStyle: 'bold'
+                        },
+                        styles: {
+                            fontSize: 10,
+                            cellPadding: 5,
+                            overflow: 'linebreak'
+                        },
+                        columnStyles: {
+                            0: { cellWidth: 60 },
+                            1: { cellWidth: 120 }
+                        }
+                    });
+                    startY = doc.lastAutoTable.finalY + 10;
+                };
+                Object.entries(formData).forEach(([title, data]) => {
+                    addSection(title, data);
+                });
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(8);
+                    doc.setTextColor(100);
+                    doc.text(
+                        `Page ${i} of ${pageCount}`,
+                        doc.internal.pageSize.width / 2,
+                        doc.internal.pageSize.height - 10,
+                        { align: 'center' }
+                    );
+                }
+                const patientName = document.getElementById('patientName').value || 'UnknownPatient';
+                const dateString = new Date().toISOString().slice(0, 10);
+                const safePatientName = patientName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                const fileName = `dental-report_${safePatientName}_${dateString}.pdf`;
+                doc.save(fileName);
+                incrementSrNo();
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('An error occurred while generating the PDF. Please try again.');
+            }
+        }
+        // Handle Register Button Click
+        document.getElementById('registerButton').addEventListener('click', async function() {
+            const formData = {
+                doctor_name: document.getElementById('drName').value,
+                patient_name: document.getElementById('patientName').value,
+                age: document.getElementById('age').value,
+                sex: document.querySelector('input[name="sex"]:checked')?.value,
+                sr_no: document.getElementById('SrNo').value,
+                date_of_order: document.getElementById('DateOfOrder').value,
+                date_of_delivery: document.getElementById('DateOfDelivery').value,
+                stage_fixed: Array.from(document.querySelectorAll('input[name="options"]:checked'))
+                    .map(cb => {
+                        const textField = cb.parentElement.nextElementSibling;
+                        return textField.style.display !== 'none' && textField.value
+                            ? `${cb.value} (${textField.value})`
+                            : cb.value;
+                    }).join(', '),
+                shade: document.getElementById('shade').value,
+                selected_teeth: selectedNumbers.join(', '),
+                instructions: document.getElementById('instructions').value
+            };
+
+            try {
+                const apiUrl = window.getApiUrl ? window.getApiUrl('api/dental-records') : 'http://localhost:3000/api/dental-records';
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+
+                const result = await response.json();
+                console.log('Data saved successfully:', result);
+                alert('Registration saved successfully!');
+                incrementSrNo();
+                document.getElementById('dentalForm').reset();
+                document.getElementById('DateOfOrder').value = new Date().toISOString().split('T')[0];
+                document.getElementById('DateOfDelivery').value = '';
+                selectedNumbers.length = 0;
+                document.getElementById('selected-numbers').textContent = 'Selected Teeth: None';
+                document.querySelectorAll('.number').forEach(num => num.classList.remove('highlighted'));
+                document.querySelectorAll('.option-text').forEach(field => field.style.display = 'none');
+                document.querySelectorAll('input[name="options"]').forEach(cb => cb.checked = false);
+                document.querySelectorAll('input[name="fixedStage"]').forEach(cb => cb.checked = false);
+                document.querySelectorAll('input[name="removableStage"]').forEach(cb => cb.checked = false);
+            } catch (error) {
+                console.error('Error saving registration:', error.message || error);
+                alert(`An error occurred while saving registration: ${error.message || 'Unknown error'}`);
+            }
+        });
+    </script>
+</body>
+</html>

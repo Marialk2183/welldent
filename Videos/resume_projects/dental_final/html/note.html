@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dental Lab Note</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to right, #a7cad5, #5dafd2);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background: linear-gradient(90deg, #b6e2e2 0%, #eaf6f6 100%);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      height: 60px;
+      margin: 0;
+    }
+    .navbar li {
+      margin: 0 12px;
+    }
+    .navbar .nav-link {
+      padding: 12px 20px;
+      color: #1e7fa7;
+      text-decoration: none;
+      font-weight: 500;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+    .navbar .nav-link.active,
+    .navbar .nav-link:hover {
+      background: #1e7fa7;
+      color: #fff;
+    }
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 80px 20px 20px;
+      min-height: 100vh;
+    }
+    .note-form {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 2px solid #333;
+      width: 100%;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .section-title {
+      color: #04113e;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 20px 0 12px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 8px;
+    }
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .form-row label {
+      flex: 1;
+      color: #04113e;
+      font-weight: 500;
+      font-size: 14px;
+      min-width: 120px;
+    }
+    .form-row input,
+    .form-row textarea {
+      flex: 2;
+      padding: 10px;
+      border: 1px solid #0b76d3;
+      border-radius: 5px;
+      font-size: 14px;
+      width: 100%;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .form-row input:focus,
+    .form-row textarea:focus {
+      outline: none;
+      border-color: #080707;
+      box-shadow: 0 0 5px rgba(6, 84, 117, 0.5);
+    }
+    .form-row textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .tooth-display {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .tooth-display .quadrant-pair {
+      display: flex;
+      gap: 10px;
+    }
+    .tooth-display .quadrant {
+      display: flex;
+      flex-direction: column;
+    }
+    .tooth-display .quadrant-label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .tooth-display .teeth-list {
+      font-size: 14px;
+      color: #04113e;
+    }
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      font-weight: normal;
+      font-size: 14px;
+      color: #04113e;
+      cursor: pointer;
+    }
+    .checkbox-group input[type="checkbox"] {
+      margin-right: 6px;
+      accent-color: #0b76d3;
+    }
+    input[type="button"] {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      background-color: #08277b;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    input[type="button"]:hover {
+      background-color: #0b3aa0;
+      transform: translateY(-2px);
+    }
+    .search-button {
+      width: auto;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .modal-content h2 {
+      margin-bottom: 10px;
+      color: #04113e;
+    }
+    .modal-content input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #0b76d3;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .modal-content table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .modal-content th, .modal-content td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+      cursor: pointer;
+    }
+    .modal-content th {
+      background: #0b76d3;
+      color: #fff;
+    }
+    .modal-content tr:hover {
+      background: #e3f2fd;
+    }
+    .modal-content .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    footer {
+      background-color: rgba(51, 51, 51, 0.9);
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: auto;
+    }
+    @media (max-width: 480px) {
+      .note-form {
+        padding: 16px;
+        max-width: 90%;
+      }
+      .form-row {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .form-row label {
+        flex: none;
+        min-width: auto;
+      }
+      .form-row input,
+      .form-row textarea {
+        flex: none;
+      }
+      .tooth-display .quadrant-pair {
+        flex-direction: column;
+        gap: 5px;
+      }
+      .checkbox-group {
+        gap: 8px;
+      }
+      .navbar ul {
+        padding: 0 12px;
+      }
+      .navbar .nav-link {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+      .modal-content {
+        width: 95%;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="patients.html" class="nav-link" id="nav-patients">Patients</a></li>
+      <li><a href="home.html" class="nav-link" id="nav-home">Home</a></li>
+      <li><a href="materials.html" class="nav-link" id="nav-materials">Materials</a></li>
+      <li><a href="note.html" class="nav-link active" id="nav-note">Note</a></li>
+      <li><a href="card.html" class="nav-link" id="nav-card">Card</a></li>
+      <li><a href="salary.html" class="nav-link" id="nav-salary">Salary</a></li>
+      <li><a href="register.html" class="nav-link" id="nav-register">Register</a></li>
+      <li><a href="invoice.html" class="nav-link" id="nav-invoice">Invoice</a></li>
+      <li><a href="exp.html" class="nav-link" id="nav-exp">Expenses</a></li>
+      <li><a href="challan.html" class="nav-link" id="nav-challan">Delivery Challan</a></li>
+    </ul>
+  </nav>
+  <div class="content-wrapper">
+    <form class="note-form" id="dentalNoteForm">
+      <input type="button" value="Search Records" class="search-button" onclick="openSearchModal()">
+      <div class="form-row">
+        <label for="no">No.</label>
+        <input type="number" id="no" name="no" min="1" required aria-required="true">
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" required aria-required="true">
+      </div>
+      <div class="form-row">
+        <label for="doctor">Doctor's Name</label>
+        <input type="text" id="doctor" name="doctor" required aria-required="true">
+      </div>
+      <div class="form-row">
+        <label for="patient">Patient Name</label>
+        <input type="text" id="patient" name="patient" required aria-required="true">
+      </div>
+      <div class="form-row">
+        <label for="delivery">Delivery Date</label>
+        <input type="date" id="delivery" name="delivery" required aria-required="true">
+      </div>
+      <div class="section-title">Tooth Numbers</div>
+      <div class="tooth-display">
+        <div class="quadrant-pair">
+          <div class="quadrant">
+            <span class="quadrant-label">Upper Left</span>
+            <span class="teeth-list" id="upperLeftTeeth"></span>
+          </div>
+          <div class="quadrant">
+            <span class="quadrant-label">Upper Right</span>
+            <span class="teeth-list" id="upperRightTeeth"></span>
+          </div>
+        </div>
+        <div class="quadrant-pair">
+          <div class="quadrant">
+            <span class="quadrant-label">Lower Left</span>
+            <span class="teeth-list" id="lowerLeftTeeth"></span>
+          </div>
+          <div class="quadrant">
+            <span class="quadrant-label">Lower Right</span>
+            <span class="teeth-list" id="lowerRightTeeth"></span>
+          </div>
+        </div>
+      </div>
+      <div class="section-title">Instructions</div>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="instructions[]" value="Veneer">Veneer</label>
+        <label><input type="checkbox" name="instructions[]" value="Monolith">Monolith</label>
+        <label><input type="checkbox" name="instructions[]" value="Bruxzir">Bruxzir</label>
+        <label><input type="checkbox" name="instructions[]" value="Zirkon">Zirkon</label>
+        <label><input type="checkbox" name="instructions[]" value="Ceramic">Ceramic</label>
+        <label><input type="checkbox" name="instructions[]" value="White Metal">White Metal</label>
+        <label><input type="checkbox" name="instructions[]" value="Valplast">Valplast</label>
+      </div>
+      <div class="section-title">Tooth Shade</div>
+      <div class="form-row">
+        <input type="text" id="shade" name="shade" placeholder="Enter tooth shade or notes" aria-label="Tooth shade or notes">
+      </div>
+      <div class="section-title">Trial Type</div>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="trial[]" value="Metal Trial">Metal Trial</label>
+        <label><input type="checkbox" name="trial[]" value="Bisq Trial">Bisq Trial</label>
+        <label><input type="checkbox" name="trial[]" value="Final">Final</label>
+      </div>
+      <div class="section-title">Additional Notes</div>
+      <div class="form-row">
+        <textarea id="notes" name="notes" rows="4" placeholder="Enter any additional notes..." aria-label="Additional notes"></textarea>
+      </div>
+      <input type="button" value="Save Changes" onclick="saveChanges()">
+      <input type="button" value="Generate PDF" onclick="generatePDF()">
+    </form>
+    <div class="modal" id="searchModal">
+      <div class="modal-content">
+        <span class="close" onclick="closeSearchModal()">×</span>
+        <h2>Select Record</h2>
+        <input type="text" id="searchFilter" placeholder="Search by Patient, Sr. No., or Doctor" aria-label="Filter records">
+        <table id="recordsTable">
+          <thead>
+            <tr>
+              <th>Patient Name</th>
+              <th>Sr. No.</th>
+              <th>Doctor Name</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>© 2025 Dental Management System. All rights reserved.</p>
+  </footer>
+  <script>
+    // Map register.html fields to note.html fields
+    function mapTeeth(selectedTeeth) {
+        try {
+            // Split the comma-separated string and extract quadrant and numbers
+            const teethMap = {
+                'Upper Left': [],
+                'Upper Right': [],
+                'Lower Left': [],
+                'Lower Right': []
+            };
+            if (selectedTeeth) {
+                selectedTeeth.split(',').forEach(tooth => {
+                    const trimmedTooth = tooth.trim();
+                    const match = trimmedTooth.match(/(Upper|Lower) (Left|Right) (\d+)/);
+                    if (match) {
+                        const [, quadrant, _, number] = match;
+                        teethMap[`${quadrant} ${_}`].push(number);
+                    }
+                });
+            }
+            return teethMap;
+        } catch (error) {
+            console.error('Error parsing selectedTeeth:', error);
+            return { 'Upper Left': [], 'Upper Right': [], 'Lower Left': [], 'Lower Right': [] };
+        }
+    }
+
+    function mapInstructions(stageFixed) {
+        try {
+            const instructionMap = {
+                'PFM': 'Veneer',
+                'Zirconia': 'Zirkon',
+                'E-max Crown/Veneer/Inlay/Onlay': 'Veneer',
+                'Ceramic Facing': 'Ceramic'
+            };
+            return stageFixed ? stageFixed.split(',').map(instruction => {
+                const baseInstruction = instruction.trim().split(' (')[0];
+                return instructionMap[baseInstruction] || baseInstruction;
+            }).filter(instruction => ['Veneer', 'Monolith', 'Bruxzir', 'Zirkon', 'Ceramic', 'White Metal', 'Valplast'].includes(instruction)) : [];
+        } catch (error) {
+            console.error('Error parsing stageFixed:', error);
+            return [];
+        }
+    }
+
+    function mapTrial(stageFixed) {
+        try {
+            const trialMap = {
+                'PFM': 'Final',
+                'Coping Trial': 'Metal Trial',
+                'Bisque Trial': 'Bisq Trial',
+                'Finish': 'Final'
+            };
+            return stageFixed ? stageFixed.split(',').map(trial => {
+                const baseTrial = trial.trim().split(' (')[0];
+                return trialMap[baseTrial] || baseTrial;
+            }) : [];
+        } catch (error) {
+            console.error('Error parsing stageFixed:', error);
+            return [];
+        }
+    }
+
+    // Search modal functionality
+    function openSearchModal() {
+        const modal = document.getElementById('searchModal');
+        const tbody = document.querySelector('#recordsTable tbody');
+        const searchFilter = document.getElementById('searchFilter');
+        tbody.innerHTML = '';
+        searchFilter.value = '';
+
+        const apiUrl = window.getApiUrl ? window.getApiUrl('api/dental-records') : 'http://localhost:3000/api/dental-records';
+        console.log('Fetching records from:', apiUrl);
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    console.error('Search API error:', response.status, response.statusText);
+                    throw new Error(`Failed to fetch records: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(records => {
+                console.log('Fetched records:', records);
+                if (records.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3">No records found</td></tr>';
+                } else {
+                    displayRecords(records);
+                }
+                modal.style.display = 'flex';
+            })
+            .catch(error => {
+                console.error('Error fetching records:', error);
+                tbody.innerHTML = `<tr><td colspan="3">Error: ${error.message}</td></tr>`;
+                modal.style.display = 'flex';
+            });
+    }
+
+    function displayRecords(records) {
+        const tbody = document.querySelector('#recordsTable tbody');
+        tbody.innerHTML = '';
+        if (records.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3">No matching records found</td></tr>';
+        } else {
+            records.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.patient_name || ''}</td>
+                    <td>${record.sr_no || ''}</td>
+                    <td>${record.doctor_name || ''}</td>
+                `;
+                row.addEventListener('click', () => {
+                    fillForm(record);
+                    closeSearchModal();
+                });
+                tbody.appendChild(row);
+            });
+        }
+    }
+
+    document.getElementById('searchFilter').addEventListener('input', function() {
+        const query = this.value.trim().toLowerCase();
+        const apiUrl = window.getApiUrl ? window.getApiUrl('api/dental-records') : 'http://localhost:3000/api/dental-records';
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    console.error('Search API error:', response.status, response.statusText);
+                    throw new Error(`Failed to fetch records: ${response.status} ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(records => {
+                const filteredRecords = records.filter(record =>
+                    (record.patient_name && record.patient_name.toLowerCase().includes(query)) ||
+                    (record.sr_no && record.sr_no.toLowerCase().includes(query)) ||
+                    (record.doctor_name && record.doctor_name.toLowerCase().includes(query))
+                );
+                displayRecords(filteredRecords);
+            })
+            .catch(error => {
+                console.error('Error fetching filtered records:', error);
+                const tbody = document.querySelector('#recordsTable tbody');
+                tbody.innerHTML = `<tr><td colspan="3">Error: ${error.message}</td></tr>`;
+            });
+    });
+
+    function closeSearchModal() {
+        document.getElementById('searchModal').style.display = 'none';
+        document.getElementById('searchFilter').value = '';
+    }
+
+    // Fill and edit form with selected record
+    function fillForm(data) {
+    // Fill text and date inputs
+    document.getElementById('no').value = data.sr_no || '';
+    document.getElementById('date').value = data.date_of_order || '';
+    document.getElementById('doctor').value = data.doctor_name || '';
+    document.getElementById('patient').value = data.patient_name || '';
+    document.getElementById('delivery').value = data.date_of_delivery || '';
+    document.getElementById('shade').value = data.shade || '';
+    document.getElementById('notes').value = data.instructions || '';
+
+    // Reset all tooth displays
+    document.getElementById('upperLeftTeeth').textContent = '';
+    document.getElementById('upperRightTeeth').textContent = '';
+    document.getElementById('lowerLeftTeeth').textContent = '';
+    document.getElementById('lowerRightTeeth').textContent = '';
+
+    // Fill tooth numbers
+    const teethMap = mapTeeth(data.selected_teeth);
+    if (teethMap['Upper Left'].length) document.getElementById('upperLeftTeeth').textContent = teethMap['Upper Left'].join(' ');
+    if (teethMap['Upper Right'].length) document.getElementById('upperRightTeeth').textContent = teethMap['Upper Right'].join(' ');
+    if (teethMap['Lower Left'].length) document.getElementById('lowerLeftTeeth').textContent = teethMap['Lower Left'].join(' ');
+    if (teethMap['Lower Right'].length) document.getElementById('lowerRightTeeth').textContent = teethMap['Lower Right'].join(' ');
+
+    // Store selected_teeth for PDF generation
+    window.selectedTeeth = data.selected_teeth || '';
+
+    // Reset and fill checkboxes for instructions
+    document.querySelectorAll('input[name="instructions[]"]').forEach(cb => cb.checked = false);
+    const mappedInstructions = mapInstructions(data.stage_fixed);
+    document.querySelectorAll('input[name="instructions[]"]').forEach(cb => {
+        if (mappedInstructions.includes(cb.value)) {
+            cb.checked = true;
+            console.log(`Checked instruction: ${cb.value}`); // Debug log
+        }
+    });
+
+    // Reset and fill checkboxes for trial types
+    document.querySelectorAll('input[name="trial[]"]').forEach(cb => cb.checked = false);
+    const mappedTrials = mapTrial(data.stage_fixed);
+    document.querySelectorAll('input[name="trial[]"]').forEach(cb => {
+        if (mappedTrials.includes(cb.value)) {
+            cb.checked = true;
+            console.log(`Checked trial: ${cb.value}`); // Debug log
+        }
+    });
+} 
+
+    // Save changes to the database
+    async function saveChanges() {
+        const form = document.getElementById('dentalNoteForm');
+        const formData = new FormData(form);
+        const data = {
+            id: formData.get('no'), // Assuming sr_no is used as a unique identifier for now
+            date_of_order: formData.get('date'),
+            doctor_name: formData.get('doctor'),
+            patient_name: formData.get('patient'),
+            date_of_delivery: formData.get('delivery'),
+            selected_teeth: JSON.stringify(formData.getAll('tooth[]')), // Note: This will be empty unless checkboxes are re-added
+            stage_fixed: JSON.stringify(formData.getAll('instructions[]')),
+            shade: formData.get('shade'),
+            instructions: formData.get('notes'),
+            trial: JSON.stringify(formData.getAll('trial[]'))
+        };
+
+        try {
+            const apiUrl = window.getApiUrl ? window.getApiUrl(`api/dental-records/${data.id}`) : `http://localhost:3000/api/dental-records/${data.id}`;
+            const response = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+            }
+
+            const result = await response.json();
+            console.log('Record updated successfully:', result);
+            alert('Changes saved successfully!');
+        } catch (error) {
+            console.error('Error saving changes:', error.message || error);
+            alert(`An error occurred while saving changes: ${error.message || 'Unknown error'}`);
+        }
+    }
+
+    // Generate PDF
+async function generatePDF() {
+    const form = document.getElementById('dentalNoteForm');
+    const formData = new FormData(form);
+    const data = {
+        no: formData.get('no'),
+        date: formData.get('date'),
+        doctor: formData.get('doctor'),
+        patient: formData.get('patient'),
+        delivery: formData.get('delivery'),
+        tooth: [
+            ...document.getElementById('upperLeftTeeth').textContent.trim().split(' '),
+            ...document.getElementById('upperRightTeeth').textContent.trim().split(' '),
+            ...document.getElementById('lowerLeftTeeth').textContent.trim().split(' '),
+            ...document.getElementById('lowerRightTeeth').textContent.trim().split(' ')
+        ].filter(t => t),
+        selected_teeth: window.selectedTeeth, // Use the stored selected_teeth
+        instructions: formData.getAll('instructions[]'),
+        shade: formData.get('shade'),
+        trial: formData.getAll('trial[]'),
+        notes: formData.get('notes')
+    };
+
+    // Validate required fields
+    if (!data.no || !data.date || !data.doctor || !data.patient || !data.delivery) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+    if (data.tooth.length === 0) {
+        alert('Please ensure at least one tooth is selected in the record.');
+        return;
+    }
+
+    try {
+        const apiUrl = window.getApiUrl ? window.getApiUrl('api/generate-pdf') : 'http://localhost:3000/api/generate-pdf';
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) {
+            const errorText = await response.text();
+            try {
+                const error = JSON.parse(errorText);
+                throw new Error(error.message || `Failed to generate PDF (Status: ${response.status})`);
+            } catch (parseError) {
+                throw new Error(`Server error: ${errorText} (Status: ${response.status})`);
+            }
+        }
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `dental_note_${data.no}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        alert('PDF generated successfully!');
+        form.reset();
+    } catch (error) {
+        console.error('Error generating PDF:', error);
+        alert(`An error occurred while generating the PDF: ${error.message}. Check console for details.`);
+    }
+}
+    // Navbar active link highlighting
+    document.addEventListener('DOMContentLoaded', function() {
+        const path = window.location.pathname;
+        const navLinks = {
+            'home.html': 'nav-home',
+            'materials.html': 'nav-materials',
+            'note.html': 'nav-note',
+            'card.html': 'nav-card',
+            'salary.html': 'nav-salary',
+            'register.html': 'nav-register',
+            'invoice.html': 'nav-invoice',
+            'exp.html': 'nav-exp',
+            'challan.html': 'nav-challan',
+            'rec.html': 'nav-receipts'
+        };
+        for (const [page, id] of Object.entries(navLinks)) {
+            if (path.includes(page)) {
+                document.getElementById(id)?.classList.add('active');
+            }
+        }
+    });
+  </script>
+</body>
+</html>

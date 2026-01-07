@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+database/*.db
+
+# Build outputs
+dist/
+build/
+*.exe
+*.blockmap
+dist.zip
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Electron
+out/
+*.asar
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Client requirements folder (images)
+CLEINTE_REQ/
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+
+# Documentation that might be too large
+*.pptx
+*.docx
+

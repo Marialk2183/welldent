@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1c7283;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #b6e2e2 0%, #eaf6f6 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            height: 60px;
+            margin: 0;
+        }
+
+        .navbar li {
+            margin: 0 12px;
+        }
+
+        .navbar .nav-link {
+            padding: 12px 20px;
+            color: #1e7fa7;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .navbar .nav-link.active,
+        .navbar .nav-link:hover {
+            background: #1e7fa7;
+            color: #fff;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 60px; /* Offset for fixed navbar */
+        }
+
+        .header h2 {
+            margin: 5px 0 0;
+            color: #53c6e6;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            gap: 20px;
+            padding: 20px;
+            padding-top: 20px; /* Added for better spacing below header */
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        .form-section {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .display-section {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .date-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .date-group > div {
+            width: 48%;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        input[type="text"], select, input[type="date"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #otherCategory {
+            display: none;
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #1e7fa7;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #7ec6da;
+        }
+
+        .display-section h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .display-data {
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #b6e2e2;
+            color: rgb(1, 0, 0);
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .date-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .date-group > div {
+                width: 100%;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 0;
+                gap: 10px; /* Added for better spacing */
+            }
+
+            .navbar li {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="patients.html" class="nav-link" id="nav-patients">Patients</a></li>
+            <li><a href="home.html" class="nav-link" id="nav-home">Home</a></li>
+            <li><a href="materials.html" class="nav-link" id="nav-materials">Materials</a></li>
+            <li><a href="note.html" class="nav-link" id="nav-note">Note</a></li>
+            <li><a href="card.html" class="nav-link" id="nav-card">Card</a></li>
+            <li><a href="salary.html" class="nav-link" id="nav-salary">Salary</a></li>
+            <li><a href="register.html" class="nav-link" id="nav-register">Register</a></li>
+            <li><a href="invoice.html" class="nav-link" id="nav-invoice">Invoice</a></li>
+            <li><a href="exp.html" class="nav-link active" id="nav-exp">Expenses</a></li>
+            <li><a href="challan.html" class="nav-link" id="nav-exp">Delivery Challan</a></li>
+        </ul>
+    </nav>
+    <div class="header">
+        <h2>Expenses</h2>
+    </div>
+    <div class="container">
+        <div class="form-section">
+            <div class="form-group">
+                <label for="search">Search</label>
+                <input type="text" id="search" placeholder="Enter search term" required oninput="searchData()">
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" onchange="toggleOtherInput()" required>
+                    <option value="">Select Category</option>
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Others">Others</option>
+                </select>
+                <input type="text" id="otherCategory" placeholder="Specify other category">
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" id="amount" placeholder="Enter amount" required>
+            </div>
+            <div class="date-group">
+                <div>
+                  <label for="formStartDate">Date</label>
+                  <input type="date" id="formStartDate" required>
+                </div>
+              </div>
+            <button onclick="submitForm()">Submit</button>
+        </div>
+        <div class="display-section">
+            <h2>Submitted Data</h2>
+            <div class="date-group">
+                <div>
+                  <label for="displayStartDate">Start Date</label>
+                  <input type="date" id="displayStartDate" required>
+                </div>
+                <div>
+                  <label for="displayEndDate">End Date</label>
+                  <input type="date" id="displayEndDate" required>
+                </div>
+              </div>
+            <div class="display-data" id="displayData">
+                <p>No data submitted yet.</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 Dental Management System. All rights reserved.</p>
+    </footer>
+    <script>
+        let mockData = [
+            { search: "Expense 1", category: "Food", amount: 50, date: "2025-07-01" },
+            { search: "Expense 2", category: "Travel", amount: 100, date: "2025-07-02" },
+            { search: "Expense 3", category: "Shopping", amount: 75, date: "2025-07-03" }
+        ];
+
+        function toggleOtherInput() {
+            const category = document.getElementById('category').value;
+            const otherInput = document.getElementById('otherCategory');
+            otherInput.style.display = category === 'Others' ? 'block' : 'none';
+            if (category !== 'Others') {
+                otherInput.value = ''; // Clear other category input when not selected
+            }
+        }
+
+        function searchData() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const filteredData = mockData.filter(item =>
+                item.search.toLowerCase().includes(searchTerm) ||
+                item.category.toLowerCase().includes(searchTerm)
+            );
+            updateDisplay(filteredData);
+        }
+
+        function submitForm() {
+            const search = document.getElementById('search').value;
+            const category = document.getElementById('category').value;
+            const otherCategory = document.getElementById('otherCategory').value;
+            const amount = document.getElementById('amount').value;
+            const formStartDate = document.getElementById('formStartDate').value;
+
+            // Basic validation
+            if (!search || !category || !amount || !formStartDate) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            const displayCategory = category === 'Others' && otherCategory ? otherCategory : category;
+
+            // Set the display start date in the right section
+            document.getElementById('displayStartDate').value = formStartDate;
+
+            // Add new entry to mock data
+            mockData.push({ search, category: displayCategory, amount, date: formStartDate });
+            searchData(); // Update display with new data
+
+            // Clear form
+            document.getElementById('search').value = '';
+            document.getElementById('category').value = '';
+            document.getElementById('otherCategory').value = '';
+            document.getElementById('amount').value = '';
+            document.getElementById('formStartDate').value = '';
+            toggleOtherInput();
+        }
+
+        function updateDisplay(data) {
+            const displayData = document.getElementById('displayData');
+            const startDate = document.getElementById('displayStartDate').value;
+            const endDate = document.getElementById('displayEndDate').value;
+
+            const filteredByDate = data.filter(item => {
+                const itemDate = new Date(item.date);
+                const start = startDate ? new Date(startDate) : null;
+                const end = endDate ? new Date(endDate) : null;
+                return (!start || itemDate >= start) && (!end || itemDate <= end);
+            });
+
+            if (filteredByDate.length === 0) {
+                displayData.innerHTML = '<p>No data submitted yet.</p>';
+                return;
+            }
+
+            displayData.innerHTML = filteredByDate.map(item => `
+                <p><strong>Search:</strong> ${item.search}</p>
+                <p><strong>Category:</strong> ${item.category}</p>
+                <p><strong>Amount:</strong> ${item.amount}</p>
+                <p><strong>Date:</strong> ${item.date}</p>
+                <hr>
+            `).join('');
+        }
+
+        document.getElementById('displayStartDate').addEventListener('change', searchData);
+        document.getElementById('displayEndDate').addEventListener('change', searchData);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const path = window.location.pathname;
+            const navLinks = {
+                'home.html': 'nav-home',
+                'materials.html': 'nav-materials',
+                'note.html': 'nav-note',
+                'card.html': 'nav-card',
+                'salary.html': 'nav-salary',
+                'register.html': 'nav-register',
+                'invoice.html': 'nav-invoice',
+                'exp.html': 'nav-exp'
+            };
+
+            for (const [page, id] of Object.entries(navLinks)) {
+                if (path.includes(page)) {
+                    document.getElementById(id)?.classList.add('active');
+                }
+            }
+            searchData(); // Initialize display with mock data
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patients</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #a7cad5, #5dafd2);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #b6e2e2 0%, #eaf6f6 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            height: 60px;
+            margin: 0;
+            flex-wrap: wrap;
+        }
+
+        .navbar li {
+            margin: 0 12px;
+        }
+
+        .navbar .nav-link {
+            padding: 12px 20px;
+            color: #1e7fa7;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .navbar .nav-link.active,
+        .navbar .nav-link:hover {
+            background: #1e7fa7;
+            color: #fff;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 100px 20px 40px;
+            min-height: 100vh;
+        }
+
+        .header {
+            width: 100%;
+            max-width: 1400px;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            color: #04113e;
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #333;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        .search-container label {
+            display: block;
+            color: #04113e;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .search-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #0b76d3;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-container input[type="text"]:focus {
+            outline: none;
+            border-color: #080707;
+            box-shadow: 0 0 5px rgba(6, 84, 117, 0.5);
+        }
+
+        .patients-container {
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #333;
+            width: 100%;
+            max-width: 1400px;
+            overflow-x: auto;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background: linear-gradient(90deg, #1e7fa7 0%, #0b3aa0 100%);
+            color: #fff;
+        }
+
+        th {
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #ddd;
+            max-width: 200px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        td:nth-child(12) {
+            max-width: 300px;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        tbody tr:nth-child(even):hover {
+            background-color: #f0f0f0;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #1e7fa7;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar ul {
+                padding: 0 12px;
+                height: auto;
+                min-height: 60px;
+            }
+
+            .navbar .nav-link {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .content-wrapper {
+                padding: 80px 10px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .patients-container {
+                padding: 16px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="patients.html" class="nav-link active" id="nav-patients">Patients</a></li>
+            <li><a href="home.html" class="nav-link" id="nav-home">Home</a></li>
+            <li><a href="materials.html" class="nav-link" id="nav-materials">Materials</a></li>
+            <li><a href="note.html" class="nav-link" id="nav-note">Note</a></li>
+            <li><a href="card.html" class="nav-link" id="nav-card">Card</a></li>
+            <li><a href="salary.html" class="nav-link" id="nav-salary">Salary</a></li>
+            <li><a href="register.html" class="nav-link" id="nav-register">Register</a></li>
+            <li><a href="invoice.html" class="nav-link" id="nav-invoice">Invoice</a></li>
+            <li><a href="exp.html" class="nav-link" id="nav-exp">Expenses</a></li>
+            <li><a href="challan.html" class="nav-link" id="nav-challan">Delivery Challan</a></li>
+        </ul>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="header">
+            <h1>All Patients</h1>
+            <div class="search-container">
+                <label for="searchPatient">Search Patient</label>
+                <input type="text" id="searchPatient" placeholder="Search by patient name, doctor name, or serial number..." onkeyup="filterPatients()">
+                <button onclick="loadPatients()" style="margin-top: 10px; padding: 10px 20px; background: #1e7fa7; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">Refresh Data</button>
+            </div>
+        </div>
+
+        <div class="patients-container">
+            <div id="loading" class="loading">Loading patients data...</div>
+            <div id="noData" class="no-data" style="display: none;">No patient records found.</div>
+            <div class="table-wrapper" id="tableWrapper" style="display: none;">
+                <table id="patientsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Serial No.</th>
+                            <th>Patient Name</th>
+                            <th>Doctor Name</th>
+                            <th>Age</th>
+                            <th>Sex</th>
+                            <th>Date of Order</th>
+                            <th>Date of Delivery</th>
+                            <th>Stage Fixed</th>
+                            <th>Shade</th>
+                            <th>Selected Teeth</th>
+                            <th>Instructions</th>
+                            <th>Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patientsTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allPatients = [];
+        let retryCount = 0;
+        const MAX_RETRIES = 5;
+        const RETRY_DELAY = 2000; // 2 seconds
+
+        // Get API base URL - always use localhost:3000 for Electron
+        function getApiBaseUrl() {
+            // In Electron (file:// protocol) or if origin is not http, use localhost:3000
+            if (window.location.protocol === 'file:' || 
+                !window.location.origin.includes('http')) {
+                return 'http://localhost:3000';
+            }
+            // In browser, try to use current origin, fallback to localhost:3000
+            return window.location.origin.includes('localhost') || 
+                   window.location.origin.includes('127.0.0.1')
+                ? window.location.origin
+                : 'http://localhost:3000';
+        }
+
+        // Fetch all patients data from dental records with retry logic
+        async function loadPatients(retry = false) {
+            const loading = document.getElementById('loading');
+            const noData = document.getElementById('noData');
+            const tableWrapper = document.getElementById('tableWrapper');
+            
+            if (!retry) {
+                loading.style.display = 'block';
+                loading.textContent = 'Loading patients data...';
+                loading.style.color = '#1e7fa7';
+                noData.style.display = 'none';
+                tableWrapper.style.display = 'none';
+                retryCount = 0;
+            }
+
+            try {
+                const baseUrl = getApiBaseUrl();
+                const apiUrl = `${baseUrl}/api/dental-records`;
+                
+                console.log('Fetching from:', apiUrl);
+                
+                // Create abort controller for timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (Array.isArray(data)) {
+                    allPatients = data;
+                    console.log(`Loaded ${allPatients.length} patient records`);
+                    displayPatients(allPatients);
+                    retryCount = 0; // Reset retry count on success
+                } else {
+                    throw new Error('Invalid data format received');
+                }
+            } catch (error) {
+                console.error('Error loading patients:', error);
+                
+                // Retry logic if server might not be ready
+                if (retryCount < MAX_RETRIES && (
+                    error.name === 'TypeError' || 
+                    error.name === 'AbortError' ||
+                    error.message.includes('Failed to fetch') ||
+                    error.message.includes('network') ||
+                    error.message.includes('aborted')
+                )) {
+                    retryCount++;
+                    loading.textContent = `Connecting to server... (Attempt ${retryCount}/${MAX_RETRIES})`;
+                    loading.style.color = '#ff9800';
+                    
+                    setTimeout(() => {
+                        loadPatients(true);
+                    }, RETRY_DELAY);
+                } else {
+                    loading.textContent = `Error loading patients data: ${error.message}. Please ensure the server is running on port 3000.`;
+                    loading.style.color = '#d32f2f';
+                    noData.style.display = 'none';
+                    tableWrapper.style.display = 'none';
+                }
+            }
+        }
+
+        // Display patients in the table
+        function displayPatients(patients) {
+            const tableBody = document.getElementById('patientsTableBody');
+            const loading = document.getElementById('loading');
+            const noData = document.getElementById('noData');
+            const tableWrapper = document.getElementById('tableWrapper');
+
+            loading.style.display = 'none';
+
+            if (patients.length === 0) {
+                noData.style.display = 'block';
+                tableWrapper.style.display = 'none';
+                return;
+            }
+
+            noData.style.display = 'none';
+            tableWrapper.style.display = 'block';
+
+            tableBody.innerHTML = '';
+
+            patients.forEach(patient => {
+                const row = document.createElement('tr');
+                
+                // Format dates
+                const formatDate = (dateStr) => {
+                    if (!dateStr) return '-';
+                    try {
+                        const date = new Date(dateStr);
+                        return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                    } catch {
+                        return dateStr;
+                    }
+                };
+                
+                // Truncate long text with tooltip
+                const truncateText = (text, maxLength = 50) => {
+                    if (!text) return '-';
+                    if (text.length <= maxLength) return text;
+                    return `<span title="${text.replace(/"/g, '&quot;')}">${text.substring(0, maxLength)}...</span>`;
+                };
+                
+                row.innerHTML = `
+                    <td>${patient.id || '-'}</td>
+                    <td>${patient.sr_no || '-'}</td>
+                    <td>${patient.patient_name || '-'}</td>
+                    <td>${patient.doctor_name || '-'}</td>
+                    <td>${patient.age || '-'}</td>
+                    <td>${patient.sex || '-'}</td>
+                    <td>${formatDate(patient.date_of_order)}</td>
+                    <td>${formatDate(patient.date_of_delivery)}</td>
+                    <td>${truncateText(patient.stage_fixed, 30)}</td>
+                    <td>${patient.shade || '-'}</td>
+                    <td>${truncateText(patient.selected_teeth, 40)}</td>
+                    <td>${truncateText(patient.instructions, 50)}</td>
+                    <td>${formatDate(patient.created_at)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Filter patients based on search input
+        function filterPatients() {
+            const searchInput = document.getElementById('searchPatient').value.toLowerCase();
+            const filteredPatients = allPatients.filter(patient => {
+                const patientName = (patient.patient_name || '').toLowerCase();
+                const doctorName = (patient.doctor_name || '').toLowerCase();
+                const srNo = (patient.sr_no || '').toLowerCase();
+                return patientName.includes(searchInput) || 
+                       doctorName.includes(searchInput) || 
+                       srNo.includes(searchInput);
+            });
+            displayPatients(filteredPatients);
+        }
+
+        // Load patients when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait a bit for server to be ready if just started
+            setTimeout(() => {
+                loadPatients();
+            }, 1000);
+        });
+        
+        // Auto-refresh every 30 seconds to get latest data
+        setInterval(() => {
+            if (document.visibilityState === 'visible' && retryCount === 0) {
+                loadPatients();
+            }
+        }, 30000);
+        
+        // Refresh when page becomes visible
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && retryCount === 0) {
+                loadPatients();
+            }
+        });
+    </script>
+</body>
+</html>

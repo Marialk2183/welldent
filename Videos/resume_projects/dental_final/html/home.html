@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Buttons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('../assets/images/teeth.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .card-container {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+            flex-wrap: wrap;
+           
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            text-align: center;
+            margin: 20px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+        .card label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .card button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background: rgb(90, 188, 227);
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .card button:hover {
+            background-color: #8fbed2;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card">
+            <label>Note</label>
+            <button onclick="window.location.href='note.html'">Submit</button>
+        </div>
+        <div class="card">
+            <label>Invoice</label>
+      <button onclick="window.location.href='invoice.html'">Submit</button>
+        </div>
+        <div class="card">
+            <label>Delivery Challan</label>
+             <button onclick="window.location.href='challan.html'">Submit</button>
+        </div>
+        <div class="card">
+            <label>Warranty Card</label>
+            <button onclick="window.location.href='card.html'">Submit</button>
+        </div>
+        <div class="card">
+            <label>Salary</label>
+            <button onclick="window.location.href='salary.html'">Submit</button>
+        </div>
+        <div class="card">
+            <label>Materials Purchased</label>
+            <button onclick="window.location.href='materials.html'">Submit</button>
+        </div>
+        <div class="card">
+            <label>Expenses</label>
+            <button onclick="window.location.href='exp.html'">Submit</button>
+        </div>
+        <div class="card">
+            <label>Register</label>
+            <button onclick="window.location.href='register.html'">Submit</button>
+        </div>
+        <div class="card">
+            <label>Patients</label>
+            <button onclick="window.location.href='patients.html'">View</button>
+        </div>
+       
+    </div>
+</body>
+</html>

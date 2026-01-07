@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Invoice - Welldent Dental Lab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: url('../assets/images/bg4.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(90deg, #b6e2e2 0%, #eaf6f6 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            height: 60px;
+            margin: 0;
+        }
+        .navbar li {
+            margin: 0 12px;
+        }
+        .navbar .nav-link {
+            padding: 12px 20px;
+            color: #1e7fa7;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        .navbar .nav-link.active,
+        .navbar .nav-link:hover {
+            background: #1e7fa7;
+            color: #fff;
+        }
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 80px 20px 20px;
+            min-height: 100vh;
+        }
+        .invoice-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1000px;
+            border: 2px solid #333;
+            margin: 0 auto;
+        }
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .invoice-header h1 {
+            font-size: 28px;
+            color: #1e7fa7;
+            margin-bottom: 10px;
+        }
+        .invoice-header .logo-placeholder {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-bar input {
+            padding: 8px;
+            width: 70%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .search-bar button {
+            padding: 8px 15px;
+            background: #1e7fa7;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .search-bar button:hover {
+            background: #166a87;
+        }
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .invoice-details div {
+            flex: 1;
+        }
+        .invoice-details label {
+            font-weight: bold;
+            color: #333;
+            display: inline-block;
+            width: 120px;
+        }
+        .invoice-details input,
+        .invoice-details span {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            width: calc(100% - 130px);
+            background: white;
+            color: black;
+        }
+        .invoice-details input:disabled,
+        .invoice-details span {
+            background: #f5f5f5;
+            color: #555;
+            cursor: not-allowed;
+        }
+        .invoice-table {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .invoice-table h2 {
+            font-size: 18px;
+            color: #1e7fa7;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #1e7fa7;
+            padding-bottom: 5px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            table-layout: auto;
+        }
+        .table th,
+        .table td {
+            border: 1px solid #ccc;
+            padding: 5px;
+            text-align: left;
+        }
+        .table th:nth-child(4),
+        .table td:nth-child(4) {
+            width: auto;
+            min-width: 350px;
+            max-width: 500px;
+        }
+        .table td .teeth-layout {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .table td .teeth-layout .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 2px;
+        }
+        .table td .teeth-layout .row .quadrant {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            min-width: 0;
+        }
+        .table td .teeth-layout .row .label {
+            font-size: 10px;
+            color: #333;
+            margin-right: 5px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .table td .number {
+            position: relative;
+            margin: 0 1px;
+            padding: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border: 1px solid #ccc;
+            font-size: 10px;
+        }
+        .table td .number.highlighted {
+            background-color: #2196F3;
+            color: white;
+            border: 1px solid #1976D2;
+        }
+        .table td .pipe {
+            width: 1px;
+            height: 10px;
+            background-color: black;
+            margin: 0 5px;
+        }
+        .table td input,
+        .table td select {
+            width: 100%;
+            padding: 3px;
+            border: none;
+            background: transparent;
+            font-size: 12px;
+        }
+        .table td select {
+            height: 30px;
+        }
+        .table td .selected-types {
+            display: block;
+            margin-top: 3px;
+            font-style: italic;
+            color: #333;
+            font-size: 10px;
+        }
+        .add-row {
+            text-align: right;
+            margin-top: 10px;
+        }
+        .add-row button {
+            background: #1e7fa7;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .add-row button:hover {
+            background: #166a87;
+        }
+        .terms-conditions {
+            margin-bottom: 20px;
+            font-size: 10px;
+            color: #555;
+            border: 1px solid #ccc;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .pdf-button {
+            margin-top: 10px;
+            text-align: right;
+        }
+        .pdf-button button {
+            background: #1e7fa7;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .pdf-button button:hover {
+            background: #166a87;
+        }
+        .total {
+            text-align: right;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
+        footer {  
+            background-color: rgba(51, 51, 51, 0.9);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+        .modal-content {
+            background: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 500px;
+            max-height: 70%;
+            overflow-y: auto;
+        }
+        .modal-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        .modal-content li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #ccc;
+        }
+        .modal-content li:hover {
+            background-color: #f5f5f5;
+        }
+        .close {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .invoice-container {
+                width: 95%;
+                max-width: 95%;
+            }
+            .navbar ul {
+                padding: 0 12px;
+            }
+            .navbar li {
+                margin: 0 6px;
+            }
+            .navbar .nav-link {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            .invoice-details {
+                flex-direction: column;
+            }
+            .invoice-details div {
+                margin-bottom: 10px;
+            }
+            .invoice-details input,
+            .invoice-details span {
+                width: calc(100% - 130px);
+            }
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .invoice-container, .invoice-container * {
+                visibility: visible;
+                position: relative;
+                width: 100%;
+                height: auto;
+                margin: 0;
+                padding: 20px;
+                background: #fff !important;
+                -webkit-print-color-adjust: exact;
+                color: #000 !important;
+                box-shadow: none;
+                border: none;
+            }
+            .navbar, .content-wrapper, footer, .modal, .search-bar, .add-row, .pdf-button {
+                display: none !important;
+            }
+            .invoice-table {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="patients.html" class="nav-link" id="nav-patients">Patients</a></li>
+            <li><a href="home.html" class="nav-link" id="nav-materials">Home</a></li>
+            <li><a href="materials.html" class="nav-link" id="nav-materials">Materials</a></li>
+            <li><a href="note.html" class="nav-link" id="nav-note">Note</a></li>
+            <li><a href="card.html" class="nav-link" id="nav-card">Card</a></li>
+            <li><a href="salary.html" class="nav-link" id="nav-salary">Salary</a></li>
+            <li><a href="register.html" class="nav-link" id="nav-register">Register</a></li>
+            <li><a href="invoice.html" class="nav-link active" id="nav-invoice">Invoice</a></li>
+            <li><a href="exp.html" class="nav-link " id="nav-exp">Expenses</a></li>
+            <li><a href="challan.html" class="nav-link" id="nav-exp">Delivery Challan</a></li>
+        </ul>
+    </nav>
+    <div class="content-wrapper">
+        <div class="invoice-container">
+            <div class="invoice-header">
+                <div class="logo-placeholder">Welldent Dental Lab</div>
+                <h1>Invoice</h1>
+            </div>
+            <form id="invoiceForm">
+                <div class="search-bar">
+                    <input type="text" id="searchDentalRecord" placeholder="Search by Patient Name or SR No..." />
+                    <button type="button" id="searchButton">Search</button>
+                </div>
+                <div class="invoice-details">
+                    <div>
+                        <label for="invoiceDate">Invoice Date</label>
+                        <input type="date" id="invoiceDate" name="invoiceDate" required value="2025-07-03"/>
+                    </div>
+                    <div>
+                        <label for="orderNumber">Order Number</label>
+                        <input type="text" id="orderNumber" name="orderNumber" disabled/>
+                    </div>
+                    <div>
+                        <label for="patientName">Patient Name</label>
+                        <input type="text" id="patientName" name="patientName" disabled/>
+                    </div>
+                </div>
+                <div class="invoice-table">
+                    <h2>Invoice Items</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Order Number</th>
+                                <th>Patient Name</th>
+                                <th>Teeth Number</th>
+                                <th>Type</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoiceItems">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                    <div class="add-row">
+                        <button type="button" id="addRow">+</button>
+                    </div>
+                    <div class="total">Total: ₹<span id="totalAmount">0.00</span></div>
+                </div>
+                <div class="terms-conditions">
+                    <h3>Terms and Conditions</h3>
+                    <p>1. Payment is due within 30 days from the invoice date.</p>
+                    <p>2. All dental work is guaranteed for 1 year against manufacturing defects.</p>
+                    <p>3. Cancellation of orders must be notified in writing 48 hours in advance.</p>
+                    <p>4. Prices are subject to change without prior notice.</p>
+                    <p>5. Disputes, if any, are subject to the jurisdiction of [Your City] courts.</p>
+                </div>
+                <div class="pdf-button">
+                    <button id="generatePdf">Generate PDF</button>
+                    <button id="printInvoice">Print</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p>© 2025 Dental Management System. All rights reserved.</p>
+    </footer>
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <ul id="searchResults"></ul>
+        </div>
+    </div>
+    <script>
+        // Load data from localStorage
+        let selectedTypes = JSON.parse(localStorage.getItem('selectedTypes')) || [];
+        let selectedTeeth = JSON.parse(localStorage.getItem('selectedTeeth')) || [];
+        let orderNumber = localStorage.getItem('dentalFormSrNo') || 'N/A';
+
+        // Set initial Order Number
+        document.getElementById('orderNumber').value = orderNumber;
+
+        // Parse teeth data to match note.html format
+        function parseTeethData(teethData) {
+            const teethMap = {
+                'Upper Left': [],
+                'Upper Right': [],
+                'Lower Left': [],
+                'Lower Right': []
+            };
+            if (!teethData) return teethMap;
+            const parts = teethData.split(',').map(part => part.trim());
+            parts.forEach(part => {
+                const match = part.match(/(Upper|Lower) (Left|Right) (\d+)/);
+                if (match) {
+                    const [, quadrant, direction, number] = match;
+                    teethMap[`${quadrant} ${direction}`].push(number);
+                }
+            });
+            return teethMap;
+        }
+
+        // Populate Invoice Table with new columns and teeth layout
+        function populateInvoiceTable(data = null) {
+            const tbody = document.getElementById('invoiceItems');
+            tbody.innerHTML = '';
+            if (data) {
+                const teethMap = parseTeethData(data.selected_teeth);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="date" class="date" value="${data.date_of_order || ''}" required></td>
+                    <td><input type="text" class="order-number" value="${data.sr_no || ''}"></td>
+                    <td><input type="text" class="patient-name" value="${data.patient_name || ''}"></td>
+                    <td>
+                        <div class="teeth-layout" data-row-id="${Date.now()}">
+                            <div class="row">
+                                <div class="quadrant">
+                                    <span class="label">Upper Left</span>
+                                    <div class="number" data-position="Upper Left" data-tooth="1">1</div><div class="number" data-position="Upper Left" data-tooth="2">2</div><div class="number" data-position="Upper Left" data-tooth="3">3</div><div class="number" data-position="Upper Left" data-tooth="4">4</div><div class="number" data-position="Upper Left" data-tooth="5">5</div><div class="number" data-position="Upper Left" data-tooth="6">6</div><div class="number" data-position="Upper Left" data-tooth="7">7</div><div class="number" data-position="Upper Left" data-tooth="8">8</div>
+                                </div>
+                                <div class="pipe"></div>
+                                <div class="quadrant">
+                                    <span class="label">Upper Right</span>
+                                    <div class="number" data-position="Upper Right" data-tooth="1">1</div><div class="number" data-position="Upper Right" data-tooth="2">2</div><div class="number" data-position="Upper Right" data-tooth="3">3</div><div class="number" data-position="Upper Right" data-tooth="4">4</div><div class="number" data-position="Upper Right" data-tooth="5">5</div><div class="number" data-position="Upper Right" data-tooth="6">6</div><div class="number" data-position="Upper Right" data-tooth="7">7</div><div class="number" data-position="Upper Right" data-tooth="8">8</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="quadrant">
+                                    <span class="label">Lower Left</span>
+                                    <div class="number" data-position="Lower Left" data-tooth="1">1</div><div class="number" data-position="Lower Left" data-tooth="2">2</div><div class="number" data-position="Lower Left" data-tooth="3">3</div><div class="number" data-position="Lower Left" data-tooth="4">4</div><div class="number" data-position="Lower Left" data-tooth="5">5</div><div class="number" data-position="Lower Left" data-tooth="6">6</div><div class="number" data-position="Lower Left" data-tooth="7">7</div><div class="number" data-position="Lower Left" data-tooth="8">8</div>
+                                </div>
+                                <div class="pipe"></div>
+                                <div class="quadrant">
+                                    <span class="label">Lower Right</span>
+                                    <div class="number" data-position="Lower Right" data-tooth="1">1</div><div class="number" data-position="Lower Right" data-tooth="2">2</div><div class="number" data-position="Lower Right" data-tooth="3">3</div><div class="number" data-position="Lower Right" data-tooth="4">4</div><div class="number" data-position="Lower Right" data-tooth="5">5</div><div class="number" data-position="Lower Right" data-tooth="6">6</div><div class="number" data-position="Lower Right" data-tooth="7">7</div><div class="number" data-position="Lower Right" data-tooth="8">8</div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <select name="type[]" multiple class="type-select" required>
+                            <option value="PFM">PFM</option>
+                            <option value="Ceramic Facing">Ceramic Facing</option>
+                            <option value="CAD CAM PFM (5yr warranty)">CAD CAM PFM (5yr warranty)</option>
+                            <option value="Zirconia">Zirconia</option>
+                            <option value="Monolith">Monolith</option>
+                            <option value="BruxZir">BruxZir</option>
+                            <option value="E-max Crown/Veneer/Inlay/Onlay">E-max Crown/Veneer/Inlay/Onlay</option>
+                            <option value="Implant Cemented/Hollow Type">Implant Cemented/Hollow Type</option>
+                            <option value="Implant Screw Retained">Implant Screw Retained</option>
+                            <option value="DMLS">DMLS</option>
+                            <option value="Tilite">Tilite</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span class="selected-types" style="display: block; margin-top: 3px;"></span>
+                    </td>
+                    <td><input type="number" class="quantity" min="1" value="1" required></td>
+                    <td><input type="number" class="amount" min="0" step="0.01" value="0.00" required></td>
+                `;
+                tbody.appendChild(row);
+                const teethLayout = row.querySelector('.teeth-layout');
+                const numbers = teethLayout.querySelectorAll('.number');
+                numbers.forEach(number => {
+                    const position = number.getAttribute('data-position');
+                    const toothNumber = number.getAttribute('data-tooth');
+                    if (teethMap[position] && teethMap[position].includes(toothNumber)) {
+                        number.classList.add('highlighted');
+                    }
+                    number.addEventListener('click', function() {
+                        this.classList.toggle('highlighted');
+                        updateSelectedTeeth(teethLayout);
+                    });
+                });
+                const select = row.querySelector('.type-select');
+                const stageFixed = data.stage_fixed.split(' ')[0];
+                Array.from(select.options).forEach(option => {
+                    if (option.value === stageFixed) option.selected = true;
+                });
+                select.dispatchEvent(new Event('change'));
+                document.querySelectorAll('.quantity, .amount, .date, .order-number, .patient-name').forEach(input => {
+                    input.addEventListener('input', updateTotal);
+                });
+            } else {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="date" class="date" value="${new Date().toISOString().split('T')[0]}" required></td>
+                    <td><input type="text" class="order-number" value=""></td>
+                    <td><input type="text" class="patient-name" value=""></td>
+                    <td>
+                        <div class="teeth-layout" data-row-id="${Date.now()}">
+                            <div class="row">
+                                <div class="quadrant">
+                                    <span class="label">Upper Left</span>
+                                    <div class="number" data-position="Upper Left" data-tooth="1">1</div><div class="number" data-position="Upper Left" data-tooth="2">2</div><div class="number" data-position="Upper Left" data-tooth="3">3</div><div class="number" data-position="Upper Left" data-tooth="4">4</div><div class="number" data-position="Upper Left" data-tooth="5">5</div><div class="number" data-position="Upper Left" data-tooth="6">6</div><div class="number" data-position="Upper Left" data-tooth="7">7</div><div class="number" data-position="Upper Left" data-tooth="8">8</div>
+                                </div>
+                                <div class="pipe"></div>
+                                <div class="quadrant">
+                                    <span class="label">Upper Right</span>
+                                    <div class="number" data-position="Upper Right" data-tooth="1">1</div><div class="number" data-position="Upper Right" data-tooth="2">2</div><div class="number" data-position="Upper Right" data-tooth="3">3</div><div class="number" data-position="Upper Right" data-tooth="4">4</div><div class="number" data-position="Upper Right" data-tooth="5">5</div><div class="number" data-position="Upper Right" data-tooth="6">6</div><div class="number" data-position="Upper Right" data-tooth="7">7</div><div class="number" data-position="Upper Right" data-tooth="8">8</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="quadrant">
+                                    <span class="label">Lower Left</span>
+                                    <div class="number" data-position="Lower Left" data-tooth="1">1</div><div class="number" data-position="Lower Left" data-tooth="2">2</div><div class="number" data-position="Lower Left" data-tooth="3">3</div><div class="number" data-position="Lower Left" data-tooth="4">4</div><div class="number" data-position="Lower Left" data-tooth="5">5</div><div class="number" data-position="Lower Left" data-tooth="6">6</div><div class="number" data-position="Lower Left" data-tooth="7">7</div><div class="number" data-position="Lower Left" data-tooth="8">8</div>
+                                </div>
+                                <div class="pipe"></div>
+                                <div class="quadrant">
+                                    <span class="label">Lower Right</span>
+                                    <div class="number" data-position="Lower Right" data-tooth="1">1</div><div class="number" data-position="Lower Right" data-tooth="2">2</div><div class="number" data-position="Lower Right" data-tooth="3">3</div><div class="number" data-position="Lower Right" data-tooth="4">4</div><div class="number" data-position="Lower Right" data-tooth="5">5</div><div class="number" data-position="Lower Right" data-tooth="6">6</div><div class="number" data-position="Lower Right" data-tooth="7">7</div><div class="number" data-position="Lower Right" data-tooth="8">8</div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <select name="type[]" multiple class="type-select" required>
+                            <option value="PFM">PFM</option>
+                            <option value="Ceramic Facing">Ceramic Facing</option>
+                            <option value="CAD CAM PFM (5yr warranty)">CAD CAM PFM (5yr warranty)</option>
+                            <option value="Zirconia">Zirconia</option>
+                            <option value="Monolith">Monolith</option>
+                            <option value="BruxZir">BruxZir</option>
+                            <option value="E-max Crown/Veneer/Inlay/Onlay">E-max Crown/Veneer/Inlay/Onlay</option>
+                            <option value="Implant Cemented/Hollow Type">Implant Cemented/Hollow Type</option>
+                            <option value="Implant Screw Retained">Implant Screw Retained</option>
+                            <option value="DMLS">DMLS</option>
+                            <option value="Tilite">Tilite</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span class="selected-types" style="display: block; margin-top: 3px;"></span>
+                    </td>
+                    <td><input type="number" class="quantity" min="1" value="1" required></td>
+                    <td><input type="number" class="amount" min="0" step="0.01" value="0.00" required></td>
+                `;
+                tbody.appendChild(row);
+                const teethLayout = row.querySelector('.teeth-layout');
+                const numbers = teethLayout.querySelectorAll('.number');
+                numbers.forEach(number => {
+                    number.addEventListener('click', function() {
+                        this.classList.toggle('highlighted');
+                        updateSelectedTeeth(teethLayout);
+                    });
+                });
+                const select = row.querySelector('.type-select');
+                select.addEventListener('change', function() {
+                    const selectedOptions = Array.from(this.selectedOptions).map(option => option.value).join(', ');
+                    this.nextElementSibling.textContent = selectedOptions || '';
+                    updateTotal();
+                });
+                document.querySelectorAll('.quantity, .amount, .date, .order-number, .patient-name').forEach(input => {
+                    input.addEventListener('input', updateTotal);
+                });
+            }
+            updateTotal();
+        }
+
+        // Add new row when plus button is clicked
+        document.getElementById('addRow').addEventListener('click', function() {
+            const tbody = document.getElementById('invoiceItems');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="date" class="date" value="${new Date().toISOString().split('T')[0]}" required></td>
+                <td><input type="text" class="order-number" value=""></td>
+                <td><input type="text" class="patient-name" value=""></td>
+                <td>
+                    <div class="teeth-layout" data-row-id="${Date.now()}">
+                        <div class="row">
+                            <div class="quadrant">
+                                <span class="label">Upper Left</span>
+                                <div class="number" data-position="Upper Left" data-tooth="1">1</div><div class="number" data-position="Upper Left" data-tooth="2">2</div><div class="number" data-position="Upper Left" data-tooth="3">3</div><div class="number" data-position="Upper Left" data-tooth="4">4</div><div class="number" data-position="Upper Left" data-tooth="5">5</div><div class="number" data-position="Upper Left" data-tooth="6">6</div><div class="number" data-position="Upper Left" data-tooth="7">7</div><div class="number" data-position="Upper Left" data-tooth="8">8</div>
+                            </div>
+                            <div class="pipe"></div>
+                            <div class="quadrant">
+                                <span class="label">Upper Right</span>
+                                <div class="number" data-position="Upper Right" data-tooth="1">1</div><div class="number" data-position="Upper Right" data-tooth="2">2</div><div class="number" data-position="Upper Right" data-tooth="3">3</div><div class="number" data-position="Upper Right" data-tooth="4">4</div><div class="number" data-position="Upper Right" data-tooth="5">5</div><div class="number" data-position="Upper Right" data-tooth="6">6</div><div class="number" data-position="Upper Right" data-tooth="7">7</div><div class="number" data-position="Upper Right" data-tooth="8">8</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="quadrant">
+                                <span class="label">Lower Left</span>
+                                <div class="number" data-position="Lower Left" data-tooth="1">1</div><div class="number" data-position="Lower Left" data-tooth="2">2</div><div class="number" data-position="Lower Left" data-tooth="3">3</div><div class="number" data-position="Lower Left" data-tooth="4">4</div><div class="number" data-position="Lower Left" data-tooth="5">5</div><div class="number" data-position="Lower Left" data-tooth="6">6</div><div class="number" data-position="Lower Left" data-tooth="7">7</div><div class="number" data-position="Lower Left" data-tooth="8">8</div>
+                            </div>
+                            <div class="pipe"></div>
+                            <div class="quadrant">
+                                <span class="label">Lower Right</span>
+                                <div class="number" data-position="Lower Right" data-tooth="1">1</div><div class="number" data-position="Lower Right" data-tooth="2">2</div><div class="number" data-position="Lower Right" data-tooth="3">3</div><div class="number" data-position="Lower Right" data-tooth="4">4</div><div class="number" data-position="Lower Right" data-tooth="5">5</div><div class="number" data-position="Lower Right" data-tooth="6">6</div><div class="number" data-position="Lower Right" data-tooth="7">7</div><div class="number" data-position="Lower Right" data-tooth="8">8</div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <select name="type[]" multiple class="type-select" required>
+                        <option value="PFM">PFM</option>
+                        <option value="Ceramic Facing">Ceramic Facing</option>
+                        <option value="CAD CAM PFM (5yr warranty)">CAD CAM PFM (5yr warranty)</option>
+                        <option value="Zirconia">Zirconia</option>
+                        <option value="Monolith">Monolith</option>
+                        <option value="BruxZir">BruxZir</option>
+                        <option value="E-max Crown/Veneer/Inlay/Onlay">E-max Crown/Veneer/Inlay/Onlay</option>
+                        <option value="Implant Cemented/Hollow Type">Implant Cemented/Hollow Type</option>
+                        <option value="Implant Screw Retained">Implant Screw Retained</option>
+                        <option value="DMLS">DMLS</option>
+                        <option value="Tilite">Tilite</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span class="selected-types" style="display: block; margin-top: 3px;"></span>
+                </td>
+                <td><input type="number" class="quantity" min="1" value="1" required></td>
+                <td><input type="number" class="amount" min="0" step="0.01" value="0.00" required></td>
+            `;
+            tbody.appendChild(row);
+            const teethLayout = row.querySelector('.teeth-layout');
+            const numbers = teethLayout.querySelectorAll('.number');
+            numbers.forEach(number => {
+                number.addEventListener('click', function() {
+                    this.classList.toggle('highlighted');
+                    updateSelectedTeeth(teethLayout);
+                });
+            });
+            const select = row.querySelector('.type-select');
+            select.addEventListener('change', function() {
+                const selectedOptions = Array.from(this.selectedOptions).map(option => option.value).join(', ');
+                this.nextElementSibling.textContent = selectedOptions || '';
+                updateTotal();
+            });
+            document.querySelectorAll('.quantity, .amount, .date, .order-number, .patient-name').forEach(input => {
+                input.addEventListener('input', updateTotal);
+            });
+            updateTotal();
+        });
+
+        // Update Total Amount
+        function updateTotal() {
+            let total = 0;
+            document.querySelectorAll('.invoice-table tr').forEach(row => {
+                const quantity = parseInt(row.querySelector('.quantity')?.value) || 0;
+                const amount = parseFloat(row.querySelector('.amount')?.value) || 0;
+                total += quantity * amount;
+            });
+            document.getElementById('totalAmount').textContent = total.toFixed(2);
+        }
+
+        // Update selected teeth and store in localStorage
+        function updateSelectedTeeth(teethLayout) {
+            const highlightedNumbers = teethLayout.querySelectorAll('.number.highlighted');
+            const selected = Array.from(highlightedNumbers).map(number => {
+                const position = number.getAttribute('data-position');
+                const tooth = number.getAttribute('data-tooth');
+                return `${position} ${tooth}`;
+            });
+            localStorage.setItem(`selectedTeeth_${teethLayout.dataset.rowId}`, JSON.stringify(selected));
+        }
+
+        // Search Modal Logic
+        const modal = document.getElementById('searchModal');
+        const searchResults = document.getElementById('searchResults');
+        const closeBtn = document.getElementsByClassName('close')[0];
+
+        document.getElementById('searchButton').addEventListener('click', async () => {
+            const query = document.getElementById('searchDentalRecord').value.trim();
+            if (!query) {
+                alert('Please enter a search term.');
+                return;
+            }
+            try {
+                const apiUrl = window.getApiUrl ? window.getApiUrl(`api/dental-records/search?query=${encodeURIComponent(query)}`) : `http://localhost:3000/api/dental-records/search?query=${encodeURIComponent(query)}`;
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error('Failed to fetch dental records');
+                const records = await response.json();
+                if (records.length === 0) {
+                    alert('No matching dental records found.');
+                    return;
+                }
+                searchResults.innerHTML = '';
+                records.forEach(record => {
+                    const li = document.createElement('li');
+                    li.textContent = `${record.patient_name} (SR No: ${record.sr_no})`;
+                    li.dataset.record = JSON.stringify(record);
+                    li.addEventListener('click', () => {
+                        const selectedRecord = JSON.parse(li.dataset.record);
+                        document.getElementById('invoiceDate').value = selectedRecord.date_of_order || new Date().toISOString().split('T')[0];
+                        document.getElementById('orderNumber').value = selectedRecord.sr_no || '';
+                        document.getElementById('patientName').value = selectedRecord.patient_name || '';
+                        populateInvoiceTable(selectedRecord);
+                        const teethLayout = document.querySelector('#invoiceItems .teeth-layout');
+                        if (teethLayout && selectedRecord.selected_teeth) {
+                            const teethMap = parseTeethData(selectedRecord.selected_teeth);
+                            const numbers = teethLayout.querySelectorAll('.number');
+                            numbers.forEach(number => {
+                                const position = number.getAttribute('data-position');
+                                const toothNumber = number.getAttribute('data-tooth');
+                                if (teethMap[position] && teethMap[position].includes(toothNumber)) {
+                                    number.classList.add('highlighted');
+                                } else {
+                                    number.classList.remove('highlighted');
+                                }
+                            });
+                            updateSelectedTeeth(teethLayout);
+                        }
+                        modal.style.display = 'none';
+                    });
+                    searchResults.appendChild(li);
+                });
+                modal.style.display = 'block';
+            } catch (error) {
+                console.error('Search error:', error);
+                alert('An error occurred while searching: ' + error.message);
+            }
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Generate PDF function
+        document.getElementById('generatePdf').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const { autoTable } = window.jspdf.jsPDF.API;
+            const doc = new jsPDF();
+            const invoiceDate = document.getElementById('invoiceDate').value;
+            const orderNumber = document.getElementById('orderNumber').value;
+            const patientName = document.getElementById('patientName').value;
+            const rows = document.querySelectorAll('#invoiceItems tr');
+            let yPos = 20;
+
+            // Title and Header
+            doc.setFontSize(20);
+            doc.text('Welldent Dental Lab Invoice', 105, yPos, { align: 'center' });
+            yPos += 10;
+            doc.setFontSize(12);
+            doc.text(`Date: ${invoiceDate} | Order Number: ${orderNumber} | Patient: ${patientName}`, 105, yPos, { align: 'center' });
+            yPos += 15;
+
+            // Invoice Table
+            doc.setFontSize(12);
+            doc.text('Invoice Items', 105, yPos, { align: 'center' });
+            yPos += 10;
+            doc.autoTable({
+                head: [['Date', 'Order Number', 'Patient Name', 'Teeth Number', 'Type', 'Quantity', 'Amount']],
+                body: Array.from(rows).map(row => {
+                    const teethLayout = row.querySelector('.teeth-layout');
+                    const highlightedTeeth = Array.from(teethLayout.querySelectorAll('.number.highlighted')).map(n => n.textContent + ' (' + n.getAttribute('data-position') + ')').join(', ');
+                    return [
+                        row.querySelector('.date')?.value || 'N/A',
+                        row.querySelector('.order-number')?.value || 'N/A',
+                        row.querySelector('.patient-name')?.value || 'N/A',
+                        highlightedTeeth || 'N/A',
+                        row.querySelector('.selected-types')?.textContent || 'N/A',
+                        row.querySelector('.quantity')?.value || '1',
+                        '₹' + (row.querySelector('.amount')?.value || '0.00')
+                    ];
+                }),
+                startY: yPos,
+                theme: 'grid',
+                headStyles: { fillColor: [30, 127, 167] },
+                bodyStyles: { fontSize: 8 },
+                margin: { left: 14, right: 14 }
+            });
+            yPos = doc.autoTable.previous.finalY + 10;
+
+            // Total
+            const total = document.getElementById('totalAmount').textContent;
+            doc.text(`Total: ₹${total}`, 180, yPos, { align: 'right' });
+            yPos += 10;
+
+            // Terms and Conditions
+            doc.text('Terms and Conditions', 105, yPos, { align: 'center' });
+            yPos += 10;
+            doc.setFontSize(8);
+            doc.text([
+                '1. Payment is due within 30 days from the invoice date.',
+                '2. All dental work is guaranteed for 1 year against manufacturing defects.',
+                '3. Cancellation of orders must be notified in writing 48 hours in advance.',
+                '4. Prices are subject to change without prior notice.',
+                '5. Disputes, if any, are subject to the jurisdiction of [Your City] courts.'
+            ], 14, yPos, { maxWidth: 180 });
+
+            // Save PDF
+            doc.save(`invoice_${orderNumber || 'temp'}.pdf`);
+        });
+
+        // Print function
+        document.getElementById('printInvoice').addEventListener('click', () => {
+            window.print(); 
+        });
+
+        // Initialize on Load with current date
+        window.addEventListener('load', () => {
+            document.getElementById('invoiceDate').value = new Date().toISOString().split('T')[0];
+            populateInvoiceTable();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Challan</title>
+    <style>
+        * {
+            box-sizing: border-box; 
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #a7cad5, #5dafd2);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #b6e2e2 0%, #eaf6f6 100%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            height: 60px;
+            margin: 0;
+        }
+
+        .navbar li {
+            margin: 0 12px;
+        }
+
+        .navbar .nav-link {
+            padding: 12px 20px;
+            color: #1e7fa7;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .navbar .nav-link.active,
+        .navbar .nav-link:hover {
+            background: #1e7fa7;
+            color: #fff;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 80px 20px 20px;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .challan-container {
+            flex: 2;
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #333;
+        }
+
+        .pending-payments {
+            flex: 1;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid #333;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header img {
+            width: 130px;
+            margin-bottom: 10px;
+        }
+
+        .company-details {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            background: #fff;
+        }
+
+        .form-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        .form-table td:first-child {
+            width: 20%;
+            background: #ecf0f1;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .form-table td:nth-child(2) {
+            width: 20%;
+        }
+
+        .form-table input,
+        .form-table select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #0b76d3;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+            color: #2c3e50;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-table input:focus,
+        .form-table select:focus {
+            outline: none;
+            border-color: #080707;
+            box-shadow: 0 0 5px rgba(6, 84, 117, 0.5);
+        }
+
+        .form-table input[readonly] {
+            background: #f1f1f1;
+            color: #7f8c8d;
+        }
+
+        .above-table {
+            margin-bottom: 15px;
+        }
+
+        .above-table div {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .above-table label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .above-table input {
+            padding: 10px;
+            border: 1px solid #0b76d3;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .above-table input:focus {
+            outline: none;
+            border-color: #080707;
+            box-shadow: 0 0 5px rgba(6, 84, 117, 0.5);
+        }
+
+        .remarks {
+            text-align: center;
+            margin-bottom: 25px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        .signature {
+            text-align: center;
+            margin-top: 25px;
+            color: #7f8c8d;
+        }
+
+        .search-bar {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #0b76d3;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #080707;
+            box-shadow: 0 0 5px rgba(6, 84, 117, 0.5);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            margin: 0 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #08277b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0b3aa0;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4b5563;
+            transform: translateY(-2px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 500px;
+            max-height: 70%;
+            overflow-y: auto;
+        }
+
+        .modal-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .modal-content li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .modal-content li:hover {
+            background-color: #f5f5f5;
+        }
+
+        .close {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .pending-payments h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .pending-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .challan-container, .pending-payments {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .challan-container {
+                padding: 16px;
+            }
+            .navbar ul {
+                padding: 0 12px;
+            }
+            .navbar .nav-link {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            .form-table td {
+                padding: 8px;
+            }
+            .search-bar input {
+                width: 100%;
+            }
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="patients.html" class="nav-link" id="nav-patients">Patients</a></li>
+            <li><a href="home.html" class="nav-link" id="nav-home">Home</a></li>
+            <li><a href="materials.html" class="nav-link" id="nav-materials">Materials</a></li>
+            <li><a href="note.html" class="nav-link" id="nav-note">Note</a></li>
+            <li><a href="card.html" class="nav-link" id="nav-card">Card</a></li>
+            <li><a href="salary.html" class="nav-link" id="nav-salary">Salary</a></li>
+            <li><a href="register.html" class="nav-link" id="nav-register">Register</a></li>
+            <li><a href="invoice.html" class="nav-link" id="nav-invoice">Invoice</a></li>
+            <li><a href="exp.html" class="nav-link" id="nav-exp">Expenses</a></li>
+            <li><a href="challan.html" class="nav-link active" id="nav-exp">Delivery Challan</a></li>
+        </ul>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="main-container">
+            <div class="challan-container">
+                <div class="header">
+                    <h2>DENTAL CERAMISTS INDIA PVT. LTD</h2>
+                    <p>301, DCIP House, 164, Hill Road, Opp. Rizvi Chambers, Bandra West, Mumbai - 400050</p>
+                    <p>Phone: 8879380758, Mobile: 9309058566, Email: dentalceramists@gmail.com</p>
+                </div>
+
+                <div class="company-details">
+                    <h3>Delivery Challan</h3>
+                </div>
+
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Search by Patient Name or SR No..." aria-label="Search Patient or SR Number">
+                    <button class="btn btn-primary" onclick="searchDetails()">Search</button>
+                </div>
+
+                <div class="above-table">
+                    <div><label>DC No:</label><input type="text" id="dcNo" value="DEL-VIR/2025/0001" readonly></div>
+                </div>
+
+                <table class="form-table" id="challanTable">
+                    <tr>
+                        <td>Doctor Name:</td>
+                        <td><input type="text" id="doctorName" value=""></td>
+                        <td>Doctor Mobile No:</td>
+                        <td><input type="text" id="doctorMobile" value=""></td>
+                        <td>Doctor Address:</td>
+                        <td><input type="text" id="doctorAddress" placeholder="Enter Doctor Address"></td>
+                    </tr>
+                    <tr>
+                        <td>DC Date:</td>
+                        <td><input type="date" id="dcDate" value=""></td>
+                        <td colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td>SR No:</td>
+                        <td><input type="text" id="srNo" value=""></td>
+                        <td>Order Date:</td>
+                        <td><input type="text" id="ordDate" value=""></td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>Patient Name:</td>
+                        <td><input type="text" id="patientName" value=""></td>
+                        <td>Teeth Number:</td>
+                        <td><input type="text" id="teethNumber" value="" placeholder="e.g., Upper Left 3, Upper Right 4"></td>
+                        <td>Units:</td>
+                        <td><input type="text" id="units" value=""></td>
+                    </tr>
+                    <tr>
+                        <td>Shade:</td>
+                        <td><input type="text" id="shade" value=""></td>
+                        <td colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td>Payment Done:</td>
+                        <td><input type="checkbox" id="paymentDone" onchange="togglePaymentDetails()"></td>
+                        <td colspan="2">Payment Details:</td>
+                        <td colspan="2"><input type="text" id="paymentDetails" style="display:none;" placeholder="Enter payment details"></td>
+                    </tr>
+                </table>
+
+                <div class="remarks">
+                    <p>Remarks: Customised Prosthesis for Patient Name: <span id="patientNameRemark"></span></p>
+                </div>
+
+                <div class="signature">
+                    <p>For: DENTAL CERAMISTS INDIA PVT. LTD</p>
+                    <p>Receiver Signature with seal</p>
+                    <p>Authorised Signatory</p>
+                    <p>All Work is guaranteed to fit on the Models/Impressions supplied by you.</p>
+                    <button class="btn btn-secondary" onclick="generatePDF()">Generate PDF</button>
+                    <button class="btn btn-primary" onclick="saveData()">Submit</button>
+                    <button class="btn btn-secondary" onclick="clearForm()">New Entry</button>
+                </div>
+            </div>
+
+            <div class="pending-payments">
+                <h3>Pending Payments</h3>
+                <div id="pendingPaymentsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <ul id="searchResults"></ul>
+        </div>
+    </div>
+
+    <script>
+        let dcCounter = 1;
+        let savedData = [];
+
+        // Mock dental records data provided
+        const dentalRecords = [
+            {
+                id: 3,
+                doctor_name: 'rahul',
+                patient_name: 'rao',
+                age: 21,
+                sex: 'M',
+                sr_no: '3',
+                date_of_order: '2025-06-23',
+                date_of_delivery: '2025-07-23',
+                stage_fixed: 'PFM (15000)',
+                shade: 'A022',
+                selected_teeth: 'Upper Left 3, Upper Right 4',
+                instructions: '',
+                created_at: '2025-07-02 06:39:24'
+            },
+            {
+                id: 2,
+                doctor_name: 'maria',
+                patient_name: 'omk',
+                age: 21,
+                sex: 'M',
+                sr_no: '2',
+                date_of_order: '2025-06-23',
+                date_of_delivery: '2025-07-31',
+                stage_fixed: 'PFM (12000), CAD CAM PFM (5yr warranty) (1500)',
+                shade: 'A52',
+                selected_teeth: 'Upper Left 1, Lower Left 2, Lower Left 3, Upper Right 6, Upper Right 5',
+                instructions: 'Done with all',
+                created_at: '2025-07-01 09:49:45'
+            },
+            {
+                id: 1,
+                doctor_name: 'umed',
+                patient_name: 'im',
+                age: 22,
+                sex: 'M',
+                sr_no: '1',
+                date_of_order: '2025-06-23',
+                date_of_delivery: '2025-07-31',
+                stage_fixed: 'PFM (15000)',
+                shade: 'A12',
+                selected_teeth: 'Upper Left 7, Lower Right 6',
+                instructions: '',
+                created_at: '2025-07-01 09:04:32'
+            }
+        ];
+
+        function generateDCNumber() {
+            const dcPrefix = "DEL-VIR/2025/";
+            return dcPrefix + String(dcCounter++).padStart(4, '0');
+        }
+
+        async function searchDetails() {
+            const searchInput = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!searchInput) {
+                alert('Please enter a search term.');
+                return;
+            }
+            const modal = document.getElementById('searchModal');
+            const searchResults = document.getElementById('searchResults');
+            const closeBtn = document.getElementsByClassName('close')[0];
+
+            try {
+                // Simulate API call with provided data
+                const response = await new Promise(resolve => setTimeout(() => resolve({
+                    ok: true,
+                    json: () => Promise.resolve(dentalRecords)
+                }), 500));
+                if (!response.ok) throw new Error('Failed to fetch dental records');
+                const records = await response.json();
+                const filteredRecords = records.filter(record =>
+                    record.sr_no.toLowerCase().includes(searchInput) ||
+                    record.patient_name.toLowerCase().includes(searchInput) ||
+                    record.doctor_name.toLowerCase().includes(searchInput)
+                );
+
+                searchResults.innerHTML = '';
+                if (filteredRecords.length === 0) {
+                    searchResults.innerHTML = '<li>No matching records found.</li>';
+                } else {
+                    filteredRecords.forEach(record => {
+                        const li = document.createElement('li');
+                        li.textContent = `${record.patient_name} (SR No: ${record.sr_no}, Doctor: ${record.doctor_name})`;
+                        li.dataset.record = JSON.stringify(record);
+                        li.addEventListener('click', () => {
+                            document.getElementById('dcNo').value = generateDCNumber();
+                            document.getElementById('doctorName').value = record.doctor_name;
+                            document.getElementById('doctorMobile').value = ''; // Add actual mobile if available
+                            document.getElementById('doctorAddress').value = ''; // Add actual address if available
+                            document.getElementById('dcDate').value = record.date_of_order;
+                            document.getElementById('srNo').value = record.sr_no;
+                            document.getElementById('ordDate').value = record.date_of_order;
+                            document.getElementById('patientName').value = record.patient_name;
+                            document.getElementById('teethNumber').value = record.selected_teeth;
+                            document.getElementById('units').value = '1'; // Derive units from stage_fixed if needed
+                            document.getElementById('shade').value = record.shade;
+                            document.getElementById('patientNameRemark').textContent = record.patient_name;
+                            modal.style.display = 'none';
+                        });
+                        searchResults.appendChild(li);
+                    });
+                }
+                modal.style.display = 'block';
+            } catch (error) {
+                console.error('Search error:', error);
+                alert('An error occurred while searching: ' + error.message);
+            }
+
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        function togglePaymentDetails() {
+            const paymentDone = document.getElementById('paymentDone').checked;
+            document.getElementById('paymentDetails').style.display = paymentDone ? 'block' : 'none';
+        }
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            if (!jsPDF) {
+                alert("jsPDF not loaded!");
+                return;
+            }
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+            if (!doc.autoTable) {
+                alert("autoTable plugin not available");
+                return;
+            }
+
+            let y = 10;
+            doc.setFontSize(16);
+            doc.text('DENTAL CERAMISTS INDIA PVT. LTD', 105, y, { align: 'center' });
+            y += 10;
+            doc.setFontSize(12);
+            doc.text('301, DCIP House, 164, Hill Road, Opp. Rizvi Chambers, Bandra West, Mumbai - 400050', 105, y, { align: 'center' });
+            y += 10;
+            doc.text('Phone: 8879380758, Mobile: 9309058566, Email: dentalceramists@gmail.com', 105, y, { align: 'center' });
+            y += 15;
+            doc.text('Delivery Challan', 105, y, { align: 'center' });
+            y += 10;
+
+            const today = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'full', timeStyle: 'short' });
+            doc.setFontSize(10);
+            doc.text(`Generated on: ${today}`, 105, y, { align: 'center' });
+            y += 10;
+
+            doc.setFontSize(12);
+            doc.text(`DC No: ${document.getElementById('dcNo').value}`, 20, y);
+            y += 10;
+
+            const aboveTableData = [
+                ['Doctor Name:', document.getElementById('doctorName').value || ''],
+                ['Doctor Mobile No:', document.getElementById('doctorMobile').value || ''],
+                ['Doctor Address:', document.getElementById('doctorAddress').value || ''],
+                ['DC Date:', document.getElementById('dcDate').value || '']
+            ];
+            doc.autoTable({
+                startY: y,
+                body: aboveTableData,
+                theme: 'grid',
+                styles: { fontSize: 10, cellPadding: 5, overflow: 'linebreak' },
+                columnStyles: { 0: { cellWidth: 40, fontStyle: 'bold' }, 1: { cellWidth: 150 } },
+                margin: { left: 10, right: 10 }
+            });
+            y = doc.lastAutoTable.finalY + 10;
+
+            if (y > 277) {
+                doc.addPage();
+                y = 10;
+            }
+
+            const tableData = [
+                [
+                    document.getElementById('srNo').value || '',
+                    document.getElementById('ordDate').value || '',
+                    document.getElementById('patientName').value || '',
+                    document.getElementById('teethNumber').value || '',
+                    document.getElementById('units').value || '',
+                    document.getElementById('shade').value || ''
+                ]
+            ];
+
+            doc.autoTable({
+                startY: y,
+                head: [['SR No', 'Order Date', 'Patient Name', 'Teeth Number', 'Units', 'Shade']],
+                body: tableData,
+                theme: 'grid',
+                headStyles: { fillColor: [33, 150, 243], textColor: 255, fontSize: 10, fontStyle: 'bold' },
+                styles: { fontSize: 8, cellPadding: 3, overflow: 'linebreak', cellWidth: 'wrap' },
+                columnStyles: { 0: { cellWidth: 32 }, 1: { cellWidth: 32 }, 2: { cellWidth: 32 }, 3: { cellWidth: 32 }, 4: { cellWidth: 32 }, 5: { cellWidth: 32 } },
+                margin: { left: 10, right: 10 },
+                pageBreak: 'auto'
+            });
+            y = doc.lastAutoTable.finalY + 10;
+
+            if (y > 277) {
+                doc.addPage();
+                y = 10;
+            }
+
+            doc.setFontSize(12);
+            doc.text(`Remarks: Customised Prosthesis for Patient Name: ${document.getElementById('patientName').value}`, 10, y);
+            y += 10;
+            doc.text(`Payment Status: ${document.getElementById('paymentDone').checked ? 'Done - ' + (document.getElementById('paymentDetails').value || 'Details not provided') : 'Pending'}`, 10, y);
+            y += 10;
+            doc.text('For: DENTAL CERAMISTS INDIA PVT. LTD', 105, y, { align: 'center' });
+            y += 10;
+            doc.text('Receiver Signature with seal', 105, y, { align: 'center' });
+            y += 10;
+            doc.text('Authorised Signatory', 105, y, { align: 'center' });
+            y += 10;
+            doc.text('All Work is guaranteed to fit on the Models/Impressions supplied by you.', 105, y, { align: 'center' });
+
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(100);
+                doc.text(`Page ${i} of ${pageCount}`, doc.internal.pageSize.width / 2, doc.internal.pageSize.height - 10, { align: 'center' });
+            }
+
+            doc.save('delivery_challan.pdf');
+        }
+
+        function saveData() {
+            const data = {
+                dcNo: document.getElementById('dcNo').value,
+                doctorName: document.getElementById('doctorName').value,
+                doctorMobile: document.getElementById('doctorMobile').value,
+                doctorAddress: document.getElementById('doctorAddress').value,
+                dcDate: document.getElementById('dcDate').value,
+                srNo: document.getElementById('srNo').value,
+                ordDate: document.getElementById('ordDate').value,
+                patientName: document.getElementById('patientName').value,
+                teethNumber: document.getElementById('teethNumber').value,
+                units: document.getElementById('units').value,
+                shade: document.getElementById('shade').value,
+                paymentDone: document.getElementById('paymentDone').checked,
+                paymentDetails: document.getElementById('paymentDone').checked ? document.getElementById('paymentDetails').value : ''
+            };
+            savedData.push(data);
+            updatePendingPayments();
+            alert('Data saved successfully!');
+        }
+
+        function clearForm() {
+            document.getElementById('dcNo').value = generateDCNumber();
+            document.getElementById('doctorName').value = '';
+            document.getElementById('doctorMobile').value = '';
+            document.getElementById('doctorAddress').value = '';
+            document.getElementById('dcDate').value = '';
+            document.getElementById('srNo').value = '';
+            document.getElementById('ordDate').value = '';
+            document.getElementById('patientName').value = '';
+            document.getElementById('teethNumber').value = '';
+            document.getElementById('units').value = '';
+            document.getElementById('shade').value = '';
+            document.getElementById('paymentDone').checked = false;
+            document.getElementById('paymentDetails').style.display = 'none';
+            document.getElementById('paymentDetails').value = '';
+            document.getElementById('patientNameRemark').textContent = '';
+        }
+
+        function updatePendingPayments() {
+            const pendingPaymentsList = document.getElementById('pendingPaymentsList');
+            pendingPaymentsList.innerHTML = '';
+            const pending = savedData.filter(item => !item.paymentDone);
+            if (pending.length === 0) {
+                pendingPaymentsList.innerHTML = '<p>No pending payments.</p>';
+            } else {
+                pending.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'pending-item';
+                    // Extract amount from stage_fixed (e.g., first number in parentheses)
+                    const amountMatch = item.stage_fixed ? item.stage_fixed.match(/\(\d+\)/) : null;
+                    const amount = amountMatch ? parseInt(amountMatch[0].replace(/[()]/g, '')) : 0;
+                    div.innerHTML = `
+                        <p><strong>DC No:</strong> ${item.dcNo}</p>
+                        <p><strong>SR No:</strong> ${item.srNo}</p>
+                        <p><strong>Patient Name:</strong> ${item.patientName}</p>
+                        <p><strong>Amount:</strong> ${amount || 'N/A'}</p>
+                    `;
+                    pendingPaymentsList.appendChild(div);
+                });
+            }
+        }
+
+        function togglePaymentDetails() {
+            const paymentDone = document.getElementById('paymentDone').checked;
+            document.getElementById('paymentDetails').style.display = paymentDone ? 'block' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const path = window.location.pathname;
+            const navLinks = {
+                'home.html': 'nav-home',
+                'materials.html': 'nav-materials',
+                'note.html': 'nav-note',
+                'card.html': 'nav-card',
+                'salary.html': 'nav-salary',
+                'register.html': 'nav-register',
+                'invoice.html': 'nav-invoice',
+                'exp.html': 'nav-exp'
+            };
+
+            for (const [page, id] of Object.entries(navLinks)) {
+                if (path.includes(page)) {
+                    document.getElementById(id)?.classList.add('active');
+                }
+            }
+            clearForm();
+            updatePendingPayments();
+        });
+    </script>
+</body>
+</html>
