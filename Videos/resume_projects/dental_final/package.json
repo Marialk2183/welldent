@@ -5,10 +5,14 @@
   "main": "main.js",
   "scripts": {
     "test": "umed",
-    "start": "electron .",
+    "start": "node server.js",
     "server": "node server.js",
     "dev": "node server.js",
     "build": "electron-builder --win"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   },
   "keywords": [
     "umed"
